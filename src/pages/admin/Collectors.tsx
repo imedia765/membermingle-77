@@ -73,7 +73,7 @@ export default function Collectors() {
                       variant="ghost"
                       size="sm"
                       onClick={() => toggleCollector(collector.id)}
-                      className="text-blue-600 hover:text-blue-700"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       {expandedCollector === collector.id ? (
                         <ChevronDown className="h-4 w-4" />
@@ -85,12 +85,12 @@ export default function Collectors() {
                       <CardTitle className="text-xl text-blue-600">
                         {collector.id} - {collector.name}
                       </CardTitle>
-                      <p className="text-sm text-blue-500">
+                      <p className="text-sm text-white bg-blue-600 inline-block px-2 py-0.5 rounded">
                         Members: {collector.members}
                       </p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" className="text-blue-600 hover:text-blue-700 hover:bg-blue-50">
+                  <Button variant="outline" size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
                     <Edit2 className="h-4 w-4 mr-2" />
                     Edit
                   </Button>
