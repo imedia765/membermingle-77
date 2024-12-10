@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Download, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { FinanceHeader } from "@/components/finance/FinanceHeader";
 import { FinanceStats } from "@/components/finance/FinanceStats";
 import { SearchTransactions } from "@/components/finance/SearchTransactions";
