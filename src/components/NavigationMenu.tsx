@@ -9,7 +9,7 @@ export function NavigationMenu() {
         <div className="mr-4 flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              MemberMingle
+              PWA Burton
             </span>
           </Link>
         </div>
