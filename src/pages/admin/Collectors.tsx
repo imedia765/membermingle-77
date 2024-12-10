@@ -65,7 +65,7 @@ const collectors = [
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className={`${isMobile ? 'space-y-4' : 'flex justify-between items-center'}`}>
         <h1 className="text-4xl font-bold text-white">
           Collectors Management
         </h1>
@@ -92,7 +92,7 @@ const collectors = [
           {collectors.map((collector) => (
             <Card key={collector.id}>
               <CardHeader className={`py-3 ${isMobile ? 'space-y-4' : ''}`}>
-                <div className={`flex ${isMobile ? 'flex-col' : 'items-center justify-between'} gap-4`}>
+                <div className={`flex flex-col gap-4`}>
                   <div className="flex items-center gap-4">
                     <Button
                       variant="ghost"
@@ -116,10 +116,10 @@ const collectors = [
                       </p>
                     </div>
                   </div>
-                  <div className={`flex gap-2 ${isMobile ? 'flex-wrap justify-start' : ''}`}>
+                  <div className="flex flex-wrap gap-2">
                     <Button 
                       variant="outline" 
-                      size={isMobile ? "default" : "default"}
+                      size="default"
                       className="bg-green-600 hover:bg-green-700 text-white min-w-[120px]"
                       onClick={() => handleActivateCollector(collector.id)}
                     >
@@ -128,7 +128,7 @@ const collectors = [
                     </Button>
                     <Button 
                       variant="outline" 
-                      size={isMobile ? "default" : "default"}
+                      size="default"
                       className="bg-yellow-600 hover:bg-yellow-700 text-white min-w-[120px]"
                       onClick={() => handleDeactivateCollector(collector.id)}
                     >
@@ -137,7 +137,7 @@ const collectors = [
                     </Button>
                     <Button 
                       variant="outline" 
-                      size={isMobile ? "default" : "default"}
+                      size="default"
                       className="bg-blue-600 hover:bg-blue-700 text-white min-w-[120px]"
                     >
                       <Edit2 className="h-4 w-4 mr-2" />
@@ -145,7 +145,7 @@ const collectors = [
                     </Button>
                     <Button 
                       variant="outline" 
-                      size={isMobile ? "default" : "default"}
+                      size="default"
                       className="bg-red-600 hover:bg-red-700 text-white min-w-[120px]"
                       onClick={() => handleDeleteCollector(collector.id)}
                     >
