@@ -28,7 +28,7 @@ export function AdminLayout() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="outline"
+                variant="default"  // Changed from "outline" to "default" to make it blue
                 className="w-full justify-between h-12"
               >
                 <span className="font-semibold">Menu</span>
