@@ -1,22 +1,15 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, TrendingUp, TrendingDown, Plus, FileText, Download } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { FileText, Download, Filter, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { FinanceHeader } from "@/components/finance/FinanceHeader";
+import { FinanceStats } from "@/components/finance/FinanceStats";
 
-// Mock data - replace with actual data from your backend
+// Mock data
 const transactions = [
   { id: 1, member: "John Doe", amount: 50, date: "2024-02-15", type: "Collection", collector: "Anjum Riaz" },
   { id: 2, member: "Jane Smith", amount: 100, date: "2024-02-14", type: "Collection", collector: "Zabbie" },
@@ -26,171 +19,22 @@ const transactions = [
 const collectors = [
   { id: 1, name: "Anjum Riaz", members: 161 },
   { id: 2, name: "Zabbie", members: 116 },
-  // ... Add other collectors
 ];
 
 export default function Finance() {
   const [activeTab, setActiveTab] = useState("overview");
-  const form = useForm();
-
-  const handleAddPayment = (data: any) => {
-    console.log("Adding payment:", data);
-    // Implement payment addition logic
-  };
-
-  const handleAddExpense = (data: any) => {
-    console.log("Adding expense:", data);
-    // Implement expense addition logic
-  };
 
   const generateReport = () => {
     console.log("Generating report...");
-    // Implement report generation logic
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-          Financial Overview
-        </h1>
-        <div className="space-x-2">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                Add Payment
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New Payment</DialogTitle>
-              </DialogHeader>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleAddPayment)} className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="paymentType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Payment Type</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="individual">Individual Member</SelectItem>
-                            <SelectItem value="collector">Collector Group</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="amount"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Amount</FormLabel>
-                        <FormControl>
-                          <Input type="number" placeholder="Enter amount" {...field} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit">Submit Payment</Button>
-                </form>
-              </Form>
-            </DialogContent>
-          </Dialog>
+      <FinanceHeader />
+      <FinanceStats />
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Expense
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New Expense</DialogTitle>
-              </DialogHeader>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleAddExpense)} className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Category</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="utilities">Utilities</SelectItem>
-                            <SelectItem value="maintenance">Maintenance</SelectItem>
-                            <SelectItem value="supplies">Supplies</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="amount"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Amount</FormLabel>
-                        <FormControl>
-                          <Input type="number" placeholder="Enter amount" {...field} />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit">Submit Expense</Button>
-                </form>
-              </Form>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">£24,680</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Monthly Income</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">£4,320</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Monthly Expenses</CardTitle>
-            <TrendingDown className="h-4 w-4 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">£1,250</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="w-full justify-start border-b">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="payments">Payments</TabsTrigger>
           <TabsTrigger value="expenses">Expenses</TabsTrigger>
@@ -200,8 +44,14 @@ export default function Finance() {
 
         <TabsContent value="overview">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Recent Transactions</CardTitle>
+              <div className="flex gap-2">
+                <Input placeholder="Search transactions..." className="w-[200px]" />
+                <Button variant="outline" size="icon">
+                  <Filter className="h-4 w-4" />
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               <Table>
@@ -238,9 +88,9 @@ export default function Finance() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <Input placeholder="Search payments..." />
+                  <Input placeholder="Search payments..." className="max-w-sm" />
                   <Select>
-                    <SelectTrigger>
+                    <SelectTrigger className="max-w-xs">
                       <SelectValue placeholder="Filter by collector" />
                     </SelectTrigger>
                     <SelectContent>
@@ -251,9 +101,38 @@ export default function Finance() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <Button variant="outline">
+                    <Download className="mr-2 h-4 w-4" />
+                    Export
+                  </Button>
                 </div>
                 <Table>
-                  {/* Add payment-specific table content */}
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Member</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Collector</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {transactions
+                      .filter((t) => t.amount > 0)
+                      .map((transaction) => (
+                        <TableRow key={transaction.id}>
+                          <TableCell>{transaction.member}</TableCell>
+                          <TableCell>£{transaction.amount}</TableCell>
+                          <TableCell>{transaction.date}</TableCell>
+                          <TableCell>{transaction.collector}</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800">
+                              Completed
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
                 </Table>
               </div>
             </CardContent>
@@ -268,9 +147,9 @@ export default function Finance() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <Input placeholder="Search expenses..." />
+                  <Input placeholder="Search expenses..." className="max-w-sm" />
                   <Select>
-                    <SelectTrigger>
+                    <SelectTrigger className="max-w-xs">
                       <SelectValue placeholder="Filter by category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -280,9 +159,38 @@ export default function Finance() {
                       <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
+                  <Button variant="outline">
+                    <Download className="mr-2 h-4 w-4" />
+                    Export
+                  </Button>
                 </div>
                 <Table>
-                  {/* Add expense-specific table content */}
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {transactions
+                      .filter((t) => t.amount < 0)
+                      .map((transaction) => (
+                        <TableRow key={transaction.id}>
+                          <TableCell>{transaction.member}</TableCell>
+                          <TableCell>{transaction.category}</TableCell>
+                          <TableCell className="text-red-500">£{Math.abs(transaction.amount)}</TableCell>
+                          <TableCell>{transaction.date}</TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800">
+                              Processed
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
                 </Table>
               </div>
             </CardContent>
@@ -295,62 +203,94 @@ export default function Finance() {
               <CardTitle>Collector Performance</CardTitle>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Collector</TableHead>
-                    <TableHead>Members</TableHead>
-                    <TableHead>Total Collections</TableHead>
-                    <TableHead>This Month</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {collectors.map((collector) => (
-                    <TableRow key={collector.id}>
-                      <TableCell>{collector.name}</TableCell>
-                      <TableCell>{collector.members}</TableCell>
-                      <TableCell>£{(Math.random() * 10000).toFixed(2)}</TableCell>
-                      <TableCell>£{(Math.random() * 1000).toFixed(2)}</TableCell>
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <Input placeholder="Search collectors..." className="max-w-sm" />
+                  <Button variant="outline">
+                    <Download className="mr-2 h-4 w-4" />
+                    Export List
+                  </Button>
+                </div>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Collector</TableHead>
+                      <TableHead>Members</TableHead>
+                      <TableHead>Total Collections</TableHead>
+                      <TableHead>This Month</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {collectors.map((collector) => (
+                      <TableRow key={collector.id}>
+                        <TableCell>{collector.name}</TableCell>
+                        <TableCell>{collector.members}</TableCell>
+                        <TableCell>£{(Math.random() * 10000).toFixed(2)}</TableCell>
+                        <TableCell>£{(Math.random() * 1000).toFixed(2)}</TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="sm">View Details</Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="reports">
-          <Card>
-            <CardHeader>
-              <CardTitle>Financial Reports</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Monthly Summary</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button onClick={generateReport} className="w-full">
-                      <FileText className="mr-2 h-4 w-4" />
-                      Generate Report
-                    </Button>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Collector Reports</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Button onClick={generateReport} className="w-full">
-                      <Download className="mr-2 h-4 w-4" />
-                      Download Report
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Monthly Summary</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-4">
+                  <Select defaultValue="current">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select period" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="current">Current Month</SelectItem>
+                      <SelectItem value="last">Last Month</SelectItem>
+                      <SelectItem value="custom">Custom Range</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button onClick={generateReport} className="w-full">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Generate Report
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Collector Reports</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-4">
+                  <Select>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select collector" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {collectors.map((collector) => (
+                        <SelectItem key={collector.id} value={collector.name}>
+                          {collector.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Button onClick={generateReport} className="w-full">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Report
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
