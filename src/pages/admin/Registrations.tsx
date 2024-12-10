@@ -1,18 +1,13 @@
 import { useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search, UserPlus, Eye, ChevronDown } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Search, UserPlus } from "lucide-react";
+import { RegistrationCard } from "@/components/registration/RegistrationCard";
+import { Registration } from "@/types/registration";
 
 // Sample data structure
-const registrations = [
+const registrations: Registration[] = [
   { 
     id: 1, 
     name: "Zain Abbas", 
@@ -104,108 +99,12 @@ export default function Registrations() {
       <ScrollArea className="h-[calc(100vh-220px)]">
         <div className="space-y-4">
           {registrations.map((registration) => (
-            <Card key={registration.id}>
-              <Collapsible
-                open={openItems.includes(registration.id)}
-                onOpenChange={() => toggleItem(registration.id)}
-              >
-                <div className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <h3 className="text-lg font-semibold">
-                        {registration.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Status: {registration.status} | Submitted: {registration.date}
-                      </p>
-                    </div>
-                  </div>
-                  <CollapsibleTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
-                  </CollapsibleTrigger>
-                </div>
-
-                <CollapsibleContent>
-                  <CardContent className="pt-0">
-                    <div className="space-y-6">
-                      <div>
-                        <h4 className="font-semibold mb-2 text-primary">Personal Information</h4>
-                        <div className="grid grid-cols-2 gap-4">
-                          {Object.entries(registration.personalInfo).map(([key, value]) => (
-                            <div key={key} className="space-y-1">
-                              <p className="text-sm font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</p>
-                              <p className="text-sm text-muted-foreground">{value}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="font-semibold mb-2 text-primary">Next of Kin</h4>
-                        <div className="grid grid-cols-2 gap-4">
-                          {Object.entries(registration.nextOfKin).map(([key, value]) => (
-                            <div key={key} className="space-y-1">
-                              <p className="text-sm font-medium capitalize">{key}</p>
-                              <p className="text-sm text-muted-foreground">{value}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {registration.spouses.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold mb-2 text-primary">Spouses</h4>
-                          <div className="space-y-4">
-                            {registration.spouses.map((spouse, index) => (
-                              <div key={index} className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                  <p className="text-sm font-medium">Name</p>
-                                  <p className="text-sm text-muted-foreground">{spouse.name}</p>
-                                </div>
-                                <div className="space-y-1">
-                                  <p className="text-sm font-medium">Date of Birth</p>
-                                  <p className="text-sm text-muted-foreground">{spouse.dateOfBirth}</p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {registration.dependants.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold mb-2 text-primary">Dependants</h4>
-                          <div className="space-y-4">
-                            {registration.dependants.map((dependant, index) => (
-                              <div key={index} className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                  <p className="text-sm font-medium">Name</p>
-                                  <p className="text-sm text-muted-foreground">{dependant.name}</p>
-                                </div>
-                                <div className="space-y-1">
-                                  <p className="text-sm font-medium">Date of Birth</p>
-                                  <p className="text-sm text-muted-foreground">{dependant.dateOfBirth}</p>
-                                </div>
-                                <div className="space-y-1">
-                                  <p className="text-sm font-medium">Gender</p>
-                                  <p className="text-sm text-muted-foreground">{dependant.gender}</p>
-                                </div>
-                                <div className="space-y-1">
-                                  <p className="text-sm font-medium">Category</p>
-                                  <p className="text-sm text-muted-foreground">{dependant.category}</p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </CollapsibleContent>
-              </Collapsible>
-            </Card>
+            <RegistrationCard
+              key={registration.id}
+              registration={registration}
+              isOpen={openItems.includes(registration.id)}
+              onToggle={() => toggleItem(registration.id)}
+            />
           ))}
         </div>
       </ScrollArea>
