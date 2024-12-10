@@ -6,11 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, UserPlus, ChevronDown, ChevronRight, Edit2, Trash2, UserCheck, Ban } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/components/ui/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Collectors() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedCollector, setExpandedCollector] = useState<string | null>(null);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const toggleCollector = (collectorId: string) => {
     setExpandedCollector(expandedCollector === collectorId ? null : collectorId);
@@ -89,14 +91,14 @@ const collectors = [
         <div className="space-y-4">
           {collectors.map((collector) => (
             <Card key={collector.id}>
-              <CardHeader className="py-3">
-                <div className="flex items-center justify-between">
+              <CardHeader className={`py-3 ${isMobile ? 'space-y-4' : ''}`}>
+                <div className={`flex ${isMobile ? 'flex-col' : 'items-center justify-between'} gap-4`}>
                   <div className="flex items-center gap-4">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => toggleCollector(collector.id)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      className="bg-blue-600 hover:bg-blue-700 text-white shrink-0"
                     >
                       {expandedCollector === collector.id ? (
                         <ChevronDown className="h-4 w-4" />
@@ -108,74 +110,76 @@ const collectors = [
                       <CardTitle className="text-xl text-white">
                         {collector.id} - {collector.name}
                       </CardTitle>
-                      <p className="text-sm text-white inline-block px-2 py-0.5">
+                      <p className="text-sm text-white inline-block py-0.5">
                         Members: {collector.members}
                       </p>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className={`flex gap-2 ${isMobile ? 'flex-wrap justify-start' : ''}`}>
                     <Button 
                       variant="outline" 
-                      size="sm" 
+                      size={isMobile ? "sm" : "default"}
                       className="bg-blue-600 hover:bg-blue-700 text-white"
                       onClick={() => handleActivateCollector(collector.id)}
                     >
                       <UserCheck className="h-4 w-4 mr-2" />
-                      Activate
+                      {!isMobile && "Activate"}
                     </Button>
                     <Button 
                       variant="outline" 
-                      size="sm" 
+                      size={isMobile ? "sm" : "default"}
                       className="bg-blue-600 hover:bg-blue-700 text-white"
                       onClick={() => handleDeactivateCollector(collector.id)}
                     >
                       <Ban className="h-4 w-4 mr-2" />
-                      Deactivate
+                      {!isMobile && "Deactivate"}
                     </Button>
                     <Button 
                       variant="outline" 
-                      size="sm" 
+                      size={isMobile ? "sm" : "default"}
                       className="bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       <Edit2 className="h-4 w-4 mr-2" />
-                      Edit
+                      {!isMobile && "Edit"}
                     </Button>
                     <Button 
                       variant="outline" 
-                      size="sm" 
+                      size={isMobile ? "sm" : "default"}
                       className="bg-red-600 hover:bg-red-700 text-white"
                       onClick={() => handleDeleteCollector(collector.id)}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
+                      {!isMobile && "Delete"}
                     </Button>
                   </div>
                 </div>
               </CardHeader>
               {expandedCollector === collector.id && (
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="text-white">Name</TableHead>
-                        <TableHead className="text-white">Member ID</TableHead>
-                        <TableHead className="text-white">Email</TableHead>
-                        <TableHead className="text-white">Contact Number</TableHead>
-                        <TableHead className="text-white">Address</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {collector.membersList.map((member) => (
-                        <TableRow key={member.memberId}>
-                          <TableCell className="text-white">{member.name}</TableCell>
-                          <TableCell className="text-white">{member.memberId}</TableCell>
-                          <TableCell className="text-white">{member.email}</TableCell>
-                          <TableCell className="text-white">{member.contact}</TableCell>
-                          <TableCell className="text-white">{member.address}</TableCell>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-white">Name</TableHead>
+                          <TableHead className="text-white">Member ID</TableHead>
+                          <TableHead className="text-white">Email</TableHead>
+                          <TableHead className="text-white">Contact Number</TableHead>
+                          <TableHead className="text-white">Address</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {collector.membersList.map((member) => (
+                          <TableRow key={member.memberId}>
+                            <TableCell className="text-white">{member.name}</TableCell>
+                            <TableCell className="text-white">{member.memberId}</TableCell>
+                            <TableCell className="text-white">{member.email}</TableCell>
+                            <TableCell className="text-white">{member.contact}</TableCell>
+                            <TableCell className="text-white">{member.address}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </CardContent>
               )}
             </Card>
