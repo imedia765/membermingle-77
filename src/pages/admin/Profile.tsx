@@ -1,4 +1,4 @@
-import { Receipt, Ticket, HeadsetIcon, File } from "lucide-react";
+import { Receipt, Ticket, HeadsetIcon, File, MailIcon, PhoneCall } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { AccountSettingsSection } from "@/components/profile/AccountSettingsSection";
 import { Button } from "@/components/ui/button";
@@ -138,11 +138,11 @@ export default function Profile() {
               </p>
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
+                  <MailIcon className="h-4 w-4" />
                   <span>support@example.com</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4" />
+                  <PhoneCall className="h-4 w-4" />
                   <span>+44 (0) 123 456 7890</span>
                 </div>
               </div>
