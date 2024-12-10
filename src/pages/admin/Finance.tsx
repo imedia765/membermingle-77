@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Download, Filter, Search } from "lucide-react";
+import { FileText, Download, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FinanceHeader } from "@/components/finance/FinanceHeader";
 import { FinanceStats } from "@/components/finance/FinanceStats";
+import { SearchTransactions } from "@/components/finance/SearchTransactions";
 
 // Mock data
 const transactions = [
@@ -23,6 +23,7 @@ const collectors = [
 
 export default function Finance() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const generateReport = () => {
     console.log("Generating report...");
@@ -32,6 +33,13 @@ export default function Finance() {
     <div className="space-y-6">
       <FinanceHeader />
       <FinanceStats />
+
+      <div className="flex items-center space-x-2">
+        <SearchTransactions searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <Button variant="outline" size="icon">
+          <Filter className="h-4 w-4" />
+        </Button>
+      </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="w-full justify-start border-b">
@@ -47,7 +55,6 @@ export default function Finance() {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Recent Transactions</CardTitle>
               <div className="flex gap-2">
-                <Input placeholder="Search transactions..." className="w-[200px]" />
                 <Button variant="outline" size="icon">
                   <Filter className="h-4 w-4" />
                 </Button>
@@ -88,7 +95,6 @@ export default function Finance() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <Input placeholder="Search payments..." className="max-w-sm" />
                   <Select>
                     <SelectTrigger className="max-w-xs">
                       <SelectValue placeholder="Filter by collector" />
@@ -147,7 +153,6 @@ export default function Finance() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <Input placeholder="Search expenses..." className="max-w-sm" />
                   <Select>
                     <SelectTrigger className="max-w-xs">
                       <SelectValue placeholder="Filter by category" />
