@@ -72,10 +72,6 @@ const Index = () => {
             </div>
           </InfoCard>
         </div>
-
-        <footer className="text-center text-sm text-muted-foreground mt-12 pb-8">
-          © 2024 SmartFIX Technologies, Burton Upon Trent. All rights reserved.
-        </footer>
       </main>
     </div>
   );
