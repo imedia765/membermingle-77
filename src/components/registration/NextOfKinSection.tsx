@@ -8,7 +8,10 @@ export const NextOfKinSection = () => {
   return (
     <Collapsible className="space-y-4">
       <CollapsibleTrigger asChild>
-        <Button variant="ghost" className="flex w-full justify-between">
+        <Button 
+          variant="ghost" 
+          className="flex w-full justify-between bg-primary/5 hover:bg-primary/10 text-primary"
+        >
           <h3 className="text-lg font-semibold">Next of Kin Information</h3>
           <ChevronDown className="h-4 w-4" />
         </Button>

@@ -23,7 +23,10 @@ export const SpousesSection = () => {
   return (
     <Collapsible className="space-y-4">
       <CollapsibleTrigger asChild>
-        <Button variant="ghost" className="flex w-full justify-between">
+        <Button 
+          variant="ghost" 
+          className="flex w-full justify-between bg-primary/5 hover:bg-primary/10 text-primary"
+        >
           <h3 className="text-lg font-semibold">Spouses</h3>
           <ChevronDown className="h-4 w-4" />
         </Button>
@@ -62,7 +65,12 @@ export const SpousesSection = () => {
             </Button>
           </div>
         ))}
-        <Button type="button" variant="outline" onClick={addSpouse} className="mt-4">
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={addSpouse} 
+          className="mt-4 w-full bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
+        >
           Add Spouse
         </Button>
       </CollapsibleContent>
