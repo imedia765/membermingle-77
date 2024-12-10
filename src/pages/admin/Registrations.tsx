@@ -4,9 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search, UserPlus, Eye, Edit2, XCircle } from "lucide-react";
+import { Search, UserPlus, Eye, ChevronDown } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
-// Sample data structure (matching the style of Members and Collectors)
+// Sample data structure
 const registrations = [
   { 
     id: 1, 
@@ -17,7 +22,26 @@ const registrations = [
     date: "2024-02-15",
     email: "zain@example.com",
     contact: "+44 7700 900777",
-    address: "123 Central St, Burton"
+    address: "123 Central St, Burton",
+    personalInfo: {
+      fullName: "Zain Abbas",
+      address: "123 Central St, Burton",
+      town: "Burton",
+      postCode: "DE14 1AA",
+      email: "zain@example.com",
+      mobile: "+44 7700 900777",
+      dateOfBirth: "1999-05-15",
+      placeOfBirth: "Burton",
+      maritalStatus: "Single",
+      gender: "Male"
+    },
+    nextOfKin: {
+      name: "Sarah Abbas",
+      address: "123 Central St, Burton",
+      phone: "+44 7700 900888"
+    },
+    spouses: [],
+    dependants: []
   },
   { 
     id: 2, 
@@ -45,10 +69,12 @@ const registrations = [
 
 export default function Registrations() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [expandedRegistration, setExpandedRegistration] = useState<number | null>(null);
+  const [openItems, setOpenItems] = useState<number[]>([]);
 
-  const toggleRegistration = (registrationId: number) => {
-    setExpandedRegistration(expandedRegistration === registrationId ? null : registrationId);
+  const toggleItem = (id: number) => {
+    setOpenItems(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
   };
 
   return (
@@ -78,49 +104,107 @@ export default function Registrations() {
       <ScrollArea className="h-[calc(100vh-220px)]">
         <div className="space-y-4">
           {registrations.map((registration) => (
-            <Card key={registration.id} className="overflow-hidden">
-              <div className="p-4 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div>
-                    <h3 className="text-lg font-semibold">
-                      {registration.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      Status: {registration.status} | Submitted: {registration.date}
-                    </p>
+            <Card key={registration.id}>
+              <Collapsible
+                open={openItems.includes(registration.id)}
+                onOpenChange={() => toggleItem(registration.id)}
+              >
+                <div className="p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div>
+                      <h3 className="text-lg font-semibold">
+                        {registration.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Status: {registration.status} | Submitted: {registration.date}
+                      </p>
+                    </div>
                   </div>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" size="sm">
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </CollapsibleTrigger>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" className="text-blue-500">
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="sm" className="text-green-500">
-                    <Edit2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="sm" className="text-destructive">
-                    <XCircle className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
 
-              {expandedRegistration === registration.id && (
-                <CardContent className="border-t pt-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <h4 className="font-semibold mb-2">Contact Information</h4>
-                      <p className="text-sm">Email: {registration.email}</p>
-                      <p className="text-sm">Phone: {registration.contact}</p>
-                      <p className="text-sm">Address: {registration.address}</p>
+                <CollapsibleContent>
+                  <CardContent className="pt-0">
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="font-semibold mb-2 text-primary">Personal Information</h4>
+                        <div className="grid grid-cols-2 gap-4">
+                          {Object.entries(registration.personalInfo).map(([key, value]) => (
+                            <div key={key} className="space-y-1">
+                              <p className="text-sm font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</p>
+                              <p className="text-sm text-muted-foreground">{value}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <h4 className="font-semibold mb-2 text-primary">Next of Kin</h4>
+                        <div className="grid grid-cols-2 gap-4">
+                          {Object.entries(registration.nextOfKin).map(([key, value]) => (
+                            <div key={key} className="space-y-1">
+                              <p className="text-sm font-medium capitalize">{key}</p>
+                              <p className="text-sm text-muted-foreground">{value}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {registration.spouses.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold mb-2 text-primary">Spouses</h4>
+                          <div className="space-y-4">
+                            {registration.spouses.map((spouse, index) => (
+                              <div key={index} className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                  <p className="text-sm font-medium">Name</p>
+                                  <p className="text-sm text-muted-foreground">{spouse.name}</p>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-sm font-medium">Date of Birth</p>
+                                  <p className="text-sm text-muted-foreground">{spouse.dateOfBirth}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {registration.dependants.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold mb-2 text-primary">Dependants</h4>
+                          <div className="space-y-4">
+                            {registration.dependants.map((dependant, index) => (
+                              <div key={index} className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                  <p className="text-sm font-medium">Name</p>
+                                  <p className="text-sm text-muted-foreground">{dependant.name}</p>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-sm font-medium">Date of Birth</p>
+                                  <p className="text-sm text-muted-foreground">{dependant.dateOfBirth}</p>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-sm font-medium">Gender</p>
+                                  <p className="text-sm text-muted-foreground">{dependant.gender}</p>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-sm font-medium">Category</p>
+                                  <p className="text-sm text-muted-foreground">{dependant.category}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <h4 className="font-semibold mb-2">Additional Details</h4>
-                      <p className="text-sm">Age: {registration.age}</p>
-                      <p className="text-sm">Area: {registration.area}</p>
-                      <p className="text-sm">Registration Date: {registration.date}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              )}
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
             </Card>
           ))}
         </div>
