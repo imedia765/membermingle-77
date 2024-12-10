@@ -41,10 +41,10 @@ export default function Collectors() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold text-blue-600">
           Collectors Management
         </h1>
-        <Button className="flex items-center gap-2">
+        <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
           <UserPlus className="h-4 w-4" />
           Add Collector
         </Button>
@@ -73,6 +73,7 @@ export default function Collectors() {
                       variant="ghost"
                       size="sm"
                       onClick={() => toggleCollector(collector.id)}
+                      className="text-blue-600 hover:text-blue-700"
                     >
                       {expandedCollector === collector.id ? (
                         <ChevronDown className="h-4 w-4" />
@@ -81,15 +82,15 @@ export default function Collectors() {
                       )}
                     </Button>
                     <div>
-                      <CardTitle className="text-xl">
+                      <CardTitle className="text-xl text-blue-600">
                         {collector.id} - {collector.name}
                       </CardTitle>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-blue-500">
                         Members: {collector.members}
                       </p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="text-blue-600 hover:text-blue-700 hover:bg-blue-50">
                     <Edit2 className="h-4 w-4 mr-2" />
                     Edit
                   </Button>
@@ -100,11 +101,11 @@ export default function Collectors() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Member ID</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Contact Number</TableHead>
-                        <TableHead>Address</TableHead>
+                        <TableHead className="text-blue-600">Name</TableHead>
+                        <TableHead className="text-blue-600">Member ID</TableHead>
+                        <TableHead className="text-blue-600">Email</TableHead>
+                        <TableHead className="text-blue-600">Contact Number</TableHead>
+                        <TableHead className="text-blue-600">Address</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
