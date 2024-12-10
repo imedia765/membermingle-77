@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -14,20 +13,26 @@ interface Dependant {
 }
 
 export const DependantsSection = () => {
-  const [dependants, setDependants] = useState<Dependant[]>([
-    { name: "", dateOfBirth: "", gender: "", category: "" },
-  ]);
+  const [dependants, setDependants] = useState<Dependant[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const addDependant = () => {
     setDependants([...dependants, { name: "", dateOfBirth: "", gender: "", category: "" }]);
+    setIsOpen(true);
   };
 
   const removeDependant = (index: number) => {
     setDependants(dependants.filter((_, i) => i !== index));
   };
 
+  const updateDependant = (index: number, field: keyof Dependant, value: string) => {
+    const newDependants = [...dependants];
+    newDependants[index][field] = value;
+    setDependants(newDependants);
+  };
+
   return (
-    <Collapsible className="space-y-4">
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-4">
       <CollapsibleTrigger asChild>
         <Button 
           variant="ghost" 
@@ -46,11 +51,7 @@ export const DependantsSection = () => {
                 <label className="text-sm font-medium">Name</label>
                 <Input
                   value={dependant.name}
-                  onChange={(e) => {
-                    const newDependants = [...dependants];
-                    newDependants[index].name = e.target.value;
-                    setDependants(newDependants);
-                  }}
+                  onChange={(e) => updateDependant(index, 'name', e.target.value)}
                 />
               </div>
               <div className="space-y-2">
@@ -58,72 +59,55 @@ export const DependantsSection = () => {
                 <Input
                   type="date"
                   value={dependant.dateOfBirth}
-                  onChange={(e) => {
-                    const newDependants = [...dependants];
-                    newDependants[index].dateOfBirth = e.target.value;
-                    setDependants(newDependants);
-                  }}
+                  onChange={(e) => updateDependant(index, 'dateOfBirth', e.target.value)}
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Gender</label>
-                <Select
+                <Input
                   value={dependant.gender}
-                  onValueChange={(value) => {
-                    const newDependants = [...dependants];
-                    newDependants[index].gender = value;
-                    setDependants(newDependants);
-                  }}
-                >
-                  <SelectTrigger className="bg-white">
-                    <SelectValue placeholder="Select Gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Male</SelectItem>
-                    <SelectItem value="female">Female</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                  onChange={(e) => updateDependant(index, 'gender', e.target.value)}
+                  placeholder="Enter gender"
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Category</label>
-                <Select
+                <Input
                   value={dependant.category}
-                  onValueChange={(value) => {
-                    const newDependants = [...dependants];
-                    newDependants[index].category = value;
-                    setDependants(newDependants);
-                  }}
-                >
-                  <SelectTrigger className="bg-white">
-                    <SelectValue placeholder="Select Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="child">Child</SelectItem>
-                    <SelectItem value="student">Student</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                  onChange={(e) => updateDependant(index, 'category', e.target.value)}
+                  placeholder="Enter category"
+                />
               </div>
             </div>
-            <Button 
-              type="button" 
-              variant="destructive" 
-              onClick={() => removeDependant(index)}
-              className="mt-2"
-            >
-              Remove Dependant
-            </Button>
+            <div className="flex justify-end gap-2 mt-4">
+              <Button 
+                type="button" 
+                variant="outline"
+                onClick={addDependant}
+                className="bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
+              >
+                Add Dependant
+              </Button>
+              <Button 
+                type="button" 
+                variant="destructive" 
+                onClick={() => removeDependant(index)}
+              >
+                Remove Dependant
+              </Button>
+            </div>
           </Card>
         ))}
-        <Button 
-          type="button" 
-          variant="outline" 
-          onClick={addDependant} 
-          className="w-full bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
-        >
-          Add Dependant
-        </Button>
+        {dependants.length === 0 && (
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={addDependant} 
+            className="w-full bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
+          >
+            Add Dependant
+          </Button>
+        )}
       </CollapsibleContent>
     </Collapsible>
   );
