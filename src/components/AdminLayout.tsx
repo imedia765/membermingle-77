@@ -62,15 +62,16 @@ function AdminLayoutContent() {
       <main className="flex-1">
         <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container">
-            <SidebarTrigger asChild>
+            <div className="flex md:hidden">
               <Button
                 variant="ghost"
-                className="md:hidden w-full justify-between py-6"
+                className="w-full justify-between py-6"
+                onClick={() => setOpenMobile(true)}
               >
                 <span className="font-semibold">Menu</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>
-            </SidebarTrigger>
+            </div>
           </div>
         </div>
         <div className="p-4 md:p-8">
