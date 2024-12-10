@@ -95,53 +95,51 @@ export default function Collectors() {
           {collectors.map((collector) => (
             <Card key={collector.id}>
               <CardHeader className="py-3">
-                <div className="flex flex-col space-y-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => toggleCollector(collector.id)}
-                        className="bg-blue-600 hover:bg-blue-700 text-white shrink-0"
-                        title={expandedCollector === collector.id ? "Collapse" : "Expand"}
-                      >
-                        {expandedCollector === collector.id ? (
-                          <ChevronDown className="h-4 w-4" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4" />
-                        )}
-                      </Button>
-                      <div>
-                        <CardTitle className="text-xl text-white">
-                          {collector.id} - {collector.name}
-                        </CardTitle>
-                        <p className="text-sm text-white inline-block py-0.5">
-                          Members: {collector.members}
-                        </p>
-                      </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => toggleCollector(collector.id)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white shrink-0"
+                      title={expandedCollector === collector.id ? "Collapse" : "Expand"}
+                    >
+                      {expandedCollector === collector.id ? (
+                        <ChevronDown className="h-4 w-4" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4" />
+                      )}
+                    </Button>
+                    <div className="min-w-0">
+                      <CardTitle className="text-xl text-white truncate">
+                        {collector.id} - {collector.name}
+                      </CardTitle>
+                      <p className="text-sm text-white">
+                        Members: {collector.members}
+                      </p>
                     </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                          Actions <ChevronDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-48">
-                        <DropdownMenuItem onClick={() => handleActivateCollector(collector.id)} className="gap-2">
-                          <UserCheck className="h-4 w-4" /> Activate
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDeactivateCollector(collector.id)} className="gap-2">
-                          <Ban className="h-4 w-4" /> Deactivate
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
-                          <Edit2 className="h-4 w-4" /> Edit Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleDeleteCollector(collector.id)} className="gap-2 text-red-600">
-                          <Trash2 className="h-4 w-4" /> Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
                   </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="ml-4 shrink-0">
+                        Actions <ChevronDown className="ml-2 h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem onClick={() => handleActivateCollector(collector.id)} className="gap-2">
+                        <UserCheck className="h-4 w-4" /> Activate
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDeactivateCollector(collector.id)} className="gap-2">
+                        <Ban className="h-4 w-4" /> Deactivate
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="gap-2">
+                        <Edit2 className="h-4 w-4" /> Edit Details
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDeleteCollector(collector.id)} className="gap-2 text-red-600">
+                        <Trash2 className="h-4 w-4" /> Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </CardHeader>
               {expandedCollector === collector.id && (
