@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import { InfoCard } from "@/components/InfoCard";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -17,6 +18,9 @@ const Index = () => {
               <p>
                 Brother Sajid has resigned and a new Committee was formally created. We would like to thank brother Sajid for his previous efforts, and he will continue helping the Committee where possible in an informal capacity.
               </p>
+              <p>
+                New Committee, <Link to="/terms" className="text-primary hover:underline">terms and conditions</Link>, and registration, formalise roles for Collectors Responsibilities
+              </p>
               <div className="space-y-2">
                 <h3 className="font-semibold text-foreground">New Committee as of December 2023</h3>
                 <ul className="list-disc list-inside pl-4">
@@ -25,6 +29,7 @@ const Index = () => {
                   <li>Treasurer: Faizan Qadiri</li>
                 </ul>
               </div>
+              <p>Terms have been updated.</p>
               <p className="text-sm italic">Website has been created and coded by Zaheer Asghar</p>
             </div>
           </InfoCard>
