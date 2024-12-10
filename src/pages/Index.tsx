@@ -31,13 +31,13 @@ const Index = () => {
           </InfoCard>
 
           <InfoCard title="What we expect">
-            <ul className="list-disc list-inside space-y-2 text-muted-foreground text-sm sm:text-base pl-4">
-              <li className="leading-relaxed">All members have been given membership numbers. Please contact your collector to find this out.</li>
-              <li className="leading-relaxed">Please login individually and fill in required data.</li>
-              <li className="leading-relaxed">We expect timely payments that are up to date.</li>
-              <li className="leading-relaxed">Collectors who are timely and up to date, thank you, and please continue with your efforts.</li>
-              <li className="leading-relaxed">Those not up to date, please find out your membership number from your collector, then please login online and make payment as soon as possible.</li>
-              <li className="leading-relaxed">If payments are not up to date then you will not be covered.</li>
+            <ul className="list-disc list-outside space-y-3 text-muted-foreground text-sm sm:text-base pl-5">
+              <li className="leading-relaxed pl-1">All members have been given membership numbers. Please contact your collector to find this out.</li>
+              <li className="leading-relaxed pl-1">Please login individually and fill in required data.</li>
+              <li className="leading-relaxed pl-1">We expect timely payments that are up to date.</li>
+              <li className="leading-relaxed pl-1">Collectors who are timely and up to date, thank you, and please continue with your efforts.</li>
+              <li className="leading-relaxed pl-1">Those not up to date, please find out your membership number from your collector, then please login online and make payment as soon as possible.</li>
+              <li className="leading-relaxed pl-1">If payments are not up to date then you will not be covered.</li>
             </ul>
           </InfoCard>
 
