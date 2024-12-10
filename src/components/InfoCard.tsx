@@ -9,7 +9,9 @@ export function InfoCard({ title, children }: InfoCardProps) {
   return (
     <Card className="animate-fade-in">
       <CardHeader>
-        <CardTitle className="text-xl text-primary">{title}</CardTitle>
+        <CardTitle className="text-xl bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
+          {title}
+        </CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
