@@ -13,14 +13,9 @@ import {
   MessageSquare, 
   TrashIcon,
   Eye,
-  Users
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { CoveredMembersOverview } from "@/components/members/CoveredMembersOverview";
 
 // Sample data structure with covered members
 const members = [
@@ -56,18 +51,10 @@ export default function Members() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
   const [editingNotes, setEditingNotes] = useState<number | null>(null);
-  const [showCoveredMembers, setShowCoveredMembers] = useState(false);
 
   const toggleMember = (memberId: number) => {
     setExpandedMember(expandedMember === memberId ? null : memberId);
   };
-
-  // Calculate total covered members
-  const totalCoveredMembers = members.reduce((acc, member) => {
-    const spousesCount = member.coveredMembers?.spouses?.length || 0;
-    const dependantsCount = member.coveredMembers?.dependants?.length || 0;
-    return acc + spousesCount + dependantsCount;
-  }, 0);
 
   return (
     <div className="space-y-6">
@@ -93,67 +80,7 @@ export default function Members() {
         </div>
       </div>
 
-      <Card className="mb-4">
-        <CardContent className="pt-6">
-          <Collapsible>
-            <CollapsibleTrigger asChild>
-              <Button 
-                variant="outline" 
-                className="flex items-center gap-2 w-full justify-between"
-                onClick={() => setShowCoveredMembers(!showCoveredMembers)}
-              >
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4" />
-                  <span>Covered Members Overview</span>
-                </div>
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="pt-4">
-              <div className="space-y-4">
-                <div className="text-lg font-semibold">
-                  Total Covered Members: {totalCoveredMembers}
-                </div>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Primary Member</TableHead>
-                      <TableHead>Covered Type</TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Date of Birth</TableHead>
-                      <TableHead>Relationship</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {members.map(member => (
-                      <>
-                        {member.coveredMembers?.spouses?.map((spouse, index) => (
-                          <TableRow key={`spouse-${member.id}-${index}`}>
-                            <TableCell>{member.name}</TableCell>
-                            <TableCell>Spouse</TableCell>
-                            <TableCell>{spouse.name}</TableCell>
-                            <TableCell>{spouse.dateOfBirth}</TableCell>
-                            <TableCell>Spouse</TableCell>
-                          </TableRow>
-                        ))}
-                        {member.coveredMembers?.dependants?.map((dependant, index) => (
-                          <TableRow key={`dependant-${member.id}-${index}`}>
-                            <TableCell>{member.name}</TableCell>
-                            <TableCell>Dependant</TableCell>
-                            <TableCell>{dependant.name}</TableCell>
-                            <TableCell>{dependant.dateOfBirth}</TableCell>
-                            <TableCell>{dependant.relationship}</TableCell>
-                          </TableRow>
-                        ))}
-                      </>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-        </CardContent>
-      </Card>
+      <CoveredMembersOverview members={members} />
 
       <ScrollArea className="h-[calc(100vh-220px)]">
         <div className="space-y-4">
