@@ -27,7 +27,7 @@ function AdminLayoutContent() {
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {
-    setOpenMobile(false);
+    setOpenMobile(false); // Close mobile menu after selection
     navigate(path);
   };
 
@@ -46,10 +46,10 @@ function AdminLayoutContent() {
                 <SidebarMenuButton
                   tooltip={item.label}
                   onClick={() => handleNavigation(item.to)}
-                  className="flex items-center gap-3"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-accent/50 rounded-lg transition-colors"
                 >
-                  <item.icon className="h-4 w-4" />
-                  <span>{item.label}</span>
+                  <item.icon className="h-5 w-5" />
+                  <span className="font-medium">{item.label}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
@@ -58,9 +58,9 @@ function AdminLayoutContent() {
       </Sidebar>
 
       {/* Main content */}
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 md:p-8">
         <div className="mb-6">
-          <SidebarTrigger className="md:hidden" />
+          <SidebarTrigger className="md:hidden hover:bg-accent/50 rounded-lg p-2 transition-colors" />
         </div>
         <Outlet />
       </main>
