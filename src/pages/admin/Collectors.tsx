@@ -85,7 +85,7 @@ export default function Collectors() {
                       <CardTitle className="text-xl text-blue-600">
                         {collector.id} - {collector.name}
                       </CardTitle>
-                      <p className="text-sm text-white bg-blue-600 inline-block px-2 py-0.5 rounded">
+                      <p className="text-sm text-blue-600 inline-block px-2 py-0.5">
                         Members: {collector.members}
                       </p>
                     </div>
