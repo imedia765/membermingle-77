@@ -30,14 +30,25 @@ const MedicalExaminerProcess = () => {
               <p className="text-muted-foreground">
                 View or download our comprehensive Medical Examiner Process Flow Chart:
               </p>
-              <a 
-                href="/Flowchart-ME-Process-NBC-Final-1.pdf" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-block"
+              <object
+                data="/Flowchart-ME-Process-NBC-Final-1.pdf"
+                type="application/pdf"
+                width="100%"
+                height="500px"
+                className="mb-4"
               >
-                <Button>View PDF Flow Chart</Button>
-              </a>
+                <p>
+                  Unable to display PDF file.{" "}
+                  <a
+                    href="/Flowchart-ME-Process-NBC-Final-1.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    Download PDF
+                  </a>
+                </p>
+              </object>
             </div>
           </div>
 
@@ -48,14 +59,16 @@ const MedicalExaminerProcess = () => {
                 <img
                   src="/WhatsApp Image 2024-10-02 at 3.50.07 PM.jpeg"
                   alt="Medical Examiner Process Documentation 1"
-                  className="rounded-lg w-full h-auto shadow-lg"
+                  className="rounded-lg w-full h-auto shadow-lg object-contain"
+                  loading="lazy"
                 />
               </div>
               <div className="space-y-4">
                 <img
                   src="/WhatsApp Image 2024-10-02 at 3.50.07 PM (1).jpeg"
                   alt="Medical Examiner Process Documentation 2"
-                  className="rounded-lg w-full h-auto shadow-lg"
+                  className="rounded-lg w-full h-auto shadow-lg object-contain"
+                  loading="lazy"
                 />
               </div>
             </div>
