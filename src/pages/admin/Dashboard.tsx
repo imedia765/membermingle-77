@@ -23,16 +23,16 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 export default function Dashboard() {
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col space-y-4">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
           Dashboard Overview
         </h1>
-        <div className="flex gap-2">
-          <Button variant="outline">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <Button variant="outline" className="w-full">
             <TrendingUp className="mr-2 h-4 w-4" />
             Generate Report
           </Button>
-          <Button>
+          <Button className="w-full">
             <Activity className="mr-2 h-4 w-4" />
             Quick Analysis
           </Button>
