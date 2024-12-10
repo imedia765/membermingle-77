@@ -19,7 +19,7 @@ const Index = () => {
                 Brother Sajid has resigned and a new Committee was formally created. We would like to thank brother Sajid for his previous efforts, and he will continue helping the Committee where possible in an informal capacity.
               </p>
               <p>
-                New Committee, <Link to="/terms" className="text-primary hover:underline">terms and conditions</Link>, and registration, formalise roles for Collectors Responsibilities
+                New Committee, <Link to="/terms" className="text-primary hover:underline">terms and conditions</Link>, and registration, formalise roles for <Link to="/collector-responsibilities" className="text-primary hover:underline">Collectors Responsibilities</Link>
               </p>
               <div className="space-y-2">
                 <h3 className="font-semibold text-foreground">New Committee as of December 2023</h3>

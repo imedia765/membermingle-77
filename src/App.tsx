@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import CollectorResponsibilities from "./pages/CollectorResponsibilities";
 import { AdminLayout } from "./components/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Members from "./pages/admin/Members";
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/terms" element={<TermsAndConditions />} />
+            <Route path="/collector-responsibilities" element={<CollectorResponsibilities />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="members" element={<Members />} />
