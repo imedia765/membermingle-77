@@ -66,9 +66,11 @@ const Index = () => {
               <p className="leading-relaxed">
                 This flow chart provides a step-by-step guide to the death certification process, ensuring transparency and clarity for all members.
               </p>
-              <Button variant="outline" className="mt-4">
-                View Flow Chart
-              </Button>
+              <Link to="/medical-examiner-process">
+                <Button variant="outline" className="mt-4">
+                  View Flow Chart
+                </Button>
+              </Link>
             </div>
           </InfoCard>
         </div>
