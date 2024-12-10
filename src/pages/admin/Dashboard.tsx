@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, UserCheck, ClipboardList, DollarSign } from "lucide-react";
 
 export default function Dashboard() {
   return (
@@ -7,39 +8,25 @@ export default function Dashboard() {
         Dashboard Overview
       </h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Total Members</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">245</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Active Collectors</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">12</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Pending Registrations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">8</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Monthly Revenue</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">£4,320</p>
-          </CardContent>
-        </Card>
+        <StatsCard icon={<Users className="h-6 w-6" />} title="Total Members" value="245" />
+        <StatsCard icon={<UserCheck className="h-6 w-6" />} title="Active Collectors" value="12" />
+        <StatsCard icon={<ClipboardList className="h-6 w-6" />} title="Pending Registrations" value="8" />
+        <StatsCard icon={<DollarSign className="h-6 w-6" />} title="Monthly Revenue" value="£4,320" />
       </div>
     </div>
+  );
+}
+
+function StatsCard({ icon, title, value }: { icon: React.ReactNode; title: string; value: string }) {
+  return (
+    <Card className="animate-fade-in">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        {icon}
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{value}</div>
+      </CardContent>
+    </Card>
   );
 }
