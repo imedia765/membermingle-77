@@ -12,43 +12,16 @@ interface FinanceTabsProps {
 
 export function FinanceTabs({ activeTab, setActiveTab }: FinanceTabsProps) {
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full relative">
-      <div className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b pb-4">
-        <TabsList className="w-full grid grid-cols-2 md:grid-cols-5 gap-4 p-4">
-          <TabsTrigger 
-            value="overview" 
-            className="w-full h-12 text-sm md:text-base px-2 whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            Overview
-          </TabsTrigger>
-          <TabsTrigger 
-            value="payments" 
-            className="w-full h-12 text-sm md:text-base px-2 whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            Payments
-          </TabsTrigger>
-          <TabsTrigger 
-            value="expenses" 
-            className="w-full h-12 text-sm md:text-base px-2 whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            Expenses
-          </TabsTrigger>
-          <TabsTrigger 
-            value="collectors" 
-            className="w-full h-12 text-sm md:text-base px-2 whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            Collectors
-          </TabsTrigger>
-          <TabsTrigger 
-            value="reports" 
-            className="w-full h-12 text-sm md:text-base px-2 whitespace-nowrap overflow-hidden text-ellipsis"
-          >
-            Reports
-          </TabsTrigger>
-        </TabsList>
-      </div>
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+      <TabsList className="w-full grid grid-cols-2 md:grid-cols-5 gap-2">
+        <TabsTrigger value="overview" className="w-full">Overview</TabsTrigger>
+        <TabsTrigger value="payments" className="w-full">Payments</TabsTrigger>
+        <TabsTrigger value="expenses" className="w-full">Expenses</TabsTrigger>
+        <TabsTrigger value="collectors" className="w-full">Collectors</TabsTrigger>
+        <TabsTrigger value="reports" className="w-full">Reports</TabsTrigger>
+      </TabsList>
 
-      <div className="pt-8">
+      <div className="mt-6">
         <TabsContent value="overview">
           <FinanceOverviewTab />
         </TabsContent>
