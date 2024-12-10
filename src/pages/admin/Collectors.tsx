@@ -7,6 +7,12 @@ import { Search, UserPlus, ChevronDown, ChevronRight, Edit2, Trash2, UserCheck, 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/components/ui/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Collectors() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,29 +45,26 @@ export default function Collectors() {
     });
   };
 
-// Sample data structure
-const collectors = [
-  {
-    id: "01",
-    name: "Anjum Riaz",
-    members: 161,
-    membersList: [
-      { name: "Mohammed Ali / Micheal Cashmore (updated)", memberId: "AR01001", email: "", contact: "", address: "Askew way, woodville DE11 8FX" },
-      { name: "Khadam Hussain", memberId: "AR01002", email: "", contact: "", address: "Ash st" },
-      // ... more members
-    ]
-  },
-  {
-    id: "02",
-    name: "Zabbie",
-    members: 116,
-    membersList: [
-      { name: "Naveed Zabbie", memberId: "Z02001", email: "", contact: "", address: "Grange St" },
-      // ... more members
-    ]
-  },
-  // ... other collectors
-];
+  // Sample data structure
+  const collectors = [
+    {
+      id: "01",
+      name: "Anjum Riaz",
+      members: 161,
+      membersList: [
+        { name: "Mohammed Ali / Micheal Cashmore (updated)", memberId: "AR01001", email: "", contact: "", address: "Askew way, woodville DE11 8FX" },
+        { name: "Khadam Hussain", memberId: "AR01002", email: "", contact: "", address: "Ash st" },
+      ]
+    },
+    {
+      id: "02",
+      name: "Zabbie",
+      members: 116,
+      membersList: [
+        { name: "Naveed Zabbie", memberId: "Z02001", email: "", contact: "", address: "Grange St" },
+      ]
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -93,65 +96,51 @@ const collectors = [
             <Card key={collector.id}>
               <CardHeader className="py-3">
                 <div className="flex flex-col space-y-4">
-                  <div className="flex items-center gap-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleCollector(collector.id)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white shrink-0"
-                      title={expandedCollector === collector.id ? "Collapse" : "Expand"}
-                    >
-                      {expandedCollector === collector.id ? (
-                        <ChevronDown className="h-4 w-4" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4" />
-                      )}
-                    </Button>
-                    <div>
-                      <CardTitle className="text-xl text-white">
-                        {collector.id} - {collector.name}
-                      </CardTitle>
-                      <p className="text-sm text-white inline-block py-0.5">
-                        Members: {collector.members}
-                      </p>
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => toggleCollector(collector.id)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white shrink-0"
+                        title={expandedCollector === collector.id ? "Collapse" : "Expand"}
+                      >
+                        {expandedCollector === collector.id ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                      </Button>
+                      <div>
+                        <CardTitle className="text-xl text-white">
+                          {collector.id} - {collector.name}
+                        </CardTitle>
+                        <p className="text-sm text-white inline-block py-0.5">
+                          Members: {collector.members}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="default"
-                      className="bg-green-600 hover:bg-green-700 text-white w-full"
-                      onClick={() => handleActivateCollector(collector.id)}
-                    >
-                      <UserCheck className="h-4 w-4 mr-2" />
-                      Activate
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="default"
-                      className="bg-yellow-600 hover:bg-yellow-700 text-white w-full"
-                      onClick={() => handleDeactivateCollector(collector.id)}
-                    >
-                      <Ban className="h-4 w-4 mr-2" />
-                      Deactivate
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="default"
-                      className="bg-blue-600 hover:bg-blue-700 text-white w-full"
-                    >
-                      <Edit2 className="h-4 w-4 mr-2" />
-                      Edit Details
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="default"
-                      className="bg-red-600 hover:bg-red-700 text-white w-full"
-                      onClick={() => handleDeleteCollector(collector.id)}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="ml-auto">
+                          Actions <ChevronDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem onClick={() => handleActivateCollector(collector.id)} className="gap-2">
+                          <UserCheck className="h-4 w-4" /> Activate
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDeactivateCollector(collector.id)} className="gap-2">
+                          <Ban className="h-4 w-4" /> Deactivate
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="gap-2">
+                          <Edit2 className="h-4 w-4" /> Edit Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDeleteCollector(collector.id)} className="gap-2 text-red-600">
+                          <Trash2 className="h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               </CardHeader>
