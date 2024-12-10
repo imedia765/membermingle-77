@@ -71,7 +71,7 @@ const collectors = [
         </h1>
         <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
           <UserPlus className="h-4 w-4" />
-          Add Collector
+          Add New Collector
         </Button>
       </div>
 
@@ -99,6 +99,7 @@ const collectors = [
                       size="sm"
                       onClick={() => toggleCollector(collector.id)}
                       className="bg-blue-600 hover:bg-blue-700 text-white shrink-0"
+                      title={expandedCollector === collector.id ? "Collapse" : "Expand"}
                     >
                       {expandedCollector === collector.id ? (
                         <ChevronDown className="h-4 w-4" />
@@ -118,38 +119,38 @@ const collectors = [
                   <div className={`flex gap-2 ${isMobile ? 'flex-wrap justify-start' : ''}`}>
                     <Button 
                       variant="outline" 
-                      size={isMobile ? "sm" : "default"}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      size={isMobile ? "default" : "default"}
+                      className="bg-green-600 hover:bg-green-700 text-white min-w-[120px]"
                       onClick={() => handleActivateCollector(collector.id)}
                     >
                       <UserCheck className="h-4 w-4 mr-2" />
-                      {!isMobile && "Activate"}
+                      Activate
                     </Button>
                     <Button 
                       variant="outline" 
-                      size={isMobile ? "sm" : "default"}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      size={isMobile ? "default" : "default"}
+                      className="bg-yellow-600 hover:bg-yellow-700 text-white min-w-[120px]"
                       onClick={() => handleDeactivateCollector(collector.id)}
                     >
                       <Ban className="h-4 w-4 mr-2" />
-                      {!isMobile && "Deactivate"}
+                      Deactivate
                     </Button>
                     <Button 
                       variant="outline" 
-                      size={isMobile ? "sm" : "default"}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      size={isMobile ? "default" : "default"}
+                      className="bg-blue-600 hover:bg-blue-700 text-white min-w-[120px]"
                     >
                       <Edit2 className="h-4 w-4 mr-2" />
-                      {!isMobile && "Edit"}
+                      Edit Details
                     </Button>
                     <Button 
                       variant="outline" 
-                      size={isMobile ? "sm" : "default"}
-                      className="bg-red-600 hover:bg-red-700 text-white"
+                      size={isMobile ? "default" : "default"}
+                      className="bg-red-600 hover:bg-red-700 text-white min-w-[120px]"
                       onClick={() => handleDeleteCollector(collector.id)}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
-                      {!isMobile && "Delete"}
+                      Delete
                     </Button>
                   </div>
                 </div>
