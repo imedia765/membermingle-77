@@ -3,23 +3,52 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, Mail, Phone, MapPin, Calendar, ChevronDown } from "lucide-react";
+import { Cog, Receipt, Ticket, HeadsetIcon, File, Mail, Phone, MapPin, Calendar, User, ChevronDown } from "lucide-react";
 import { SpousesSection } from "@/components/registration/SpousesSection";
 import { DependantsSection } from "@/components/registration/DependantsSection";
 import { NextOfKinSection } from "@/components/registration/NextOfKinSection";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function Profile() {
   const { toast } = useToast();
 
   const handleGoogleConnect = () => {
-    // TODO: Implement actual Google OAuth
     toast({
       title: "Google Account",
       description: "Successfully connected to Google account",
     });
     window.open('https://mail.google.com', '_blank');
   };
+
+  // Sample data for the sections
+  const paymentHistory = [
+    { date: '2024-03-15', amount: '£50.00', status: 'Paid', type: 'Membership Fee' },
+    { date: '2024-02-15', amount: '£50.00', status: 'Paid', type: 'Membership Fee' },
+  ];
+
+  const tickets = [
+    { id: '#1234', date: '2024-03-10', subject: 'Account Access', status: 'Open' },
+    { id: '#1233', date: '2024-02-28', subject: 'Payment Issue', status: 'Closed' },
+  ];
+
+  const documents = [
+    { name: 'ID Document.pdf', uploadDate: '2024-03-01', type: 'Identification' },
+    { name: 'Proof of Address.pdf', uploadDate: '2024-02-15', type: 'Address Proof' },
+  ];
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
@@ -28,9 +57,13 @@ export default function Profile() {
       </h1>
 
       <div className="space-y-6">
+        {/* Settings Section */}
         <Card>
-          <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-2xl font-bold flex items-center gap-2">
+              <Cog className="h-6 w-6" />
+              Account Settings
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
@@ -142,32 +175,176 @@ export default function Profile() {
           </CardContent>
         </Card>
 
+        {/* Payment History Section */}
+        <Card>
+          <CardContent className="pt-6">
+            <Collapsible>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="default"
+                  className="flex items-center gap-2 w-full justify-between bg-primary hover:bg-primary/90"
+                >
+                  <div className="flex items-center gap-2">
+                    <Receipt className="h-4 w-4" />
+                    <span>Payment History</span>
+                  </div>
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-4">
+                <ScrollArea className="h-[300px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paymentHistory.map((payment, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{payment.date}</TableCell>
+                          <TableCell>{payment.type}</TableCell>
+                          <TableCell>{payment.amount}</TableCell>
+                          <TableCell>{payment.status}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              </CollapsibleContent>
+            </Collapsible>
+          </CardContent>
+        </Card>
+
+        {/* Tickets Section */}
+        <Card>
+          <CardContent className="pt-6">
+            <Collapsible>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="default"
+                  className="flex items-center gap-2 w-full justify-between bg-primary hover:bg-primary/90"
+                >
+                  <div className="flex items-center gap-2">
+                    <Ticket className="h-4 w-4" />
+                    <span>Support Tickets</span>
+                  </div>
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-4">
+                <ScrollArea className="h-[300px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Ticket ID</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Subject</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {tickets.map((ticket, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{ticket.id}</TableCell>
+                          <TableCell>{ticket.date}</TableCell>
+                          <TableCell>{ticket.subject}</TableCell>
+                          <TableCell>{ticket.status}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              </CollapsibleContent>
+            </Collapsible>
+          </CardContent>
+        </Card>
+
+        {/* Support Section */}
+        <Card>
+          <CardContent className="pt-6">
+            <Collapsible>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="default"
+                  className="flex items-center gap-2 w-full justify-between bg-primary hover:bg-primary/90"
+                >
+                  <div className="flex items-center gap-2">
+                    <HeadsetIcon className="h-4 w-4" />
+                    <span>Support</span>
+                  </div>
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-4">
+                <div className="space-y-4 p-4">
+                  <p className="text-sm text-muted-foreground">
+                    Need help? Contact our support team through any of these channels:
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      <span>support@example.com</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4" />
+                      <span>+44 (0) 123 456 7890</span>
+                    </div>
+                  </div>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          </CardContent>
+        </Card>
+
+        {/* Documents Section */}
+        <Card>
+          <CardContent className="pt-6">
+            <Collapsible>
+              <CollapsibleTrigger asChild>
+                <Button 
+                  variant="default"
+                  className="flex items-center gap-2 w-full justify-between bg-primary hover:bg-primary/90"
+                >
+                  <div className="flex items-center gap-2">
+                    <File className="h-4 w-4" />
+                    <span>Uploaded Documents</span>
+                  </div>
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pt-4">
+                <ScrollArea className="h-[300px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Document Name</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Upload Date</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {documents.map((doc, index) => (
+                        <TableRow key={index}>
+                          <TableCell>{doc.name}</TableCell>
+                          <TableCell>{doc.type}</TableCell>
+                          <TableCell>{doc.uploadDate}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              </CollapsibleContent>
+            </Collapsible>
+          </CardContent>
+        </Card>
+
         <NextOfKinSection />
         <SpousesSection />
         <DependantsSection />
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Security Settings</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Current Password</label>
-              <Input type="password" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">New Password</label>
-              <Input type="password" />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Confirm New Password</label>
-              <Input type="password" />
-            </div>
-            <div className="flex justify-end">
-              <Button variant="outline">Change Password</Button>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );
