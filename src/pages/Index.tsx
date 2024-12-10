@@ -8,10 +8,6 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container py-8 space-y-8 max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent mb-8 animate-fade-in">
-          Pakistan Welfare Association
-        </h1>
-
         <div className="grid gap-6">
           <InfoCard title="What we've been doing">
             <div className="space-y-4 text-muted-foreground">
