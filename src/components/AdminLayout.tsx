@@ -5,8 +5,8 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuButton,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
@@ -27,7 +27,7 @@ function AdminLayoutContent() {
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {
-    setOpenMobile(false); // Close mobile menu after selection
+    setOpenMobile(false);
     navigate(path);
   };
 
@@ -59,8 +59,10 @@ function AdminLayoutContent() {
 
       {/* Main content */}
       <main className="flex-1 p-4 md:p-8">
-        <div className="mb-6">
-          <SidebarTrigger className="md:hidden hover:bg-accent/50 rounded-lg p-2 transition-colors" />
+        <div className="w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+          <div className="container flex h-14 items-center">
+            <SidebarTrigger className="md:hidden hover:bg-accent/50 rounded-lg p-2 transition-colors" />
+          </div>
         </div>
         <Outlet />
       </main>
