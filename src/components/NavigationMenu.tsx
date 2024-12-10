@@ -14,7 +14,17 @@ export function NavigationMenu() {
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
+          <div className="w-full flex-1 md:w-auto md:flex-none space-x-2">
+            <Link to="/login">
+              <Button variant="outline" size="sm">
+                Login
+              </Button>
+            </Link>
+            <Link to="/register">
+              <Button variant="default" size="sm">
+                Register
+              </Button>
+            </Link>
             <Link to="/admin">
               <Button variant="outline" size="sm">
                 Admin Panel
