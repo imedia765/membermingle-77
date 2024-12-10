@@ -13,9 +13,15 @@ import {
   MessageSquare, 
   TrashIcon,
   Eye,
+  Users,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CoveredMembersOverview } from "@/components/members/CoveredMembersOverview";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 // Sample data structure with covered members
 const members = [
@@ -51,6 +57,7 @@ export default function Members() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
   const [editingNotes, setEditingNotes] = useState<number | null>(null);
+  const [showPayingMembers, setShowPayingMembers] = useState(false);
 
   const toggleMember = (memberId: number) => {
     setExpandedMember(expandedMember === memberId ? null : memberId);
@@ -81,6 +88,51 @@ export default function Members() {
       </div>
 
       <CoveredMembersOverview members={members} />
+
+      <Card className="mb-4">
+        <CardContent className="pt-6">
+          <Collapsible>
+            <CollapsibleTrigger asChild>
+              <Button 
+                variant="default"
+                className="flex items-center gap-2 w-full justify-between bg-primary hover:bg-primary/90"
+              >
+                <div className="flex items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  <span>Paying Members Overview</span>
+                </div>
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="pt-4">
+              <ScrollArea className="h-[300px]">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Member Name</TableHead>
+                      <TableHead>Membership No</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Last Payment</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {members.map((member) => (
+                      <TableRow key={member.id}>
+                        <TableCell>{member.name}</TableCell>
+                        <TableCell>{member.membershipNo}</TableCell>
+                        <TableCell>{member.status}</TableCell>
+                        <TableCell>
+                          {member.paymentHistory[0]?.date || 'No payments'}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
+            </CollapsibleContent>
+          </Collapsible>
+        </CardContent>
+      </Card>
 
       <ScrollArea className="h-[calc(100vh-220px)]">
         <div className="space-y-4">
