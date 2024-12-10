@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, UserCheck, ClipboardList, Database, DollarSign, UserCircle } from "lucide-react";
+import { LayoutDashboard, Users, UserCheck, ClipboardList, Database, DollarSign, UserCircle, ChevronDown } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,6 +11,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useSidebar } from "@/components/ui/sidebar";
+import { Button } from "./ui/button";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", to: "/admin" },
@@ -27,7 +28,7 @@ function AdminLayoutContent() {
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {
-    setOpenMobile(false); // Close mobile menu after selection
+    setOpenMobile(false);
     navigate(path);
   };
 
@@ -58,11 +59,23 @@ function AdminLayoutContent() {
       </Sidebar>
 
       {/* Main content */}
-      <main className="flex-1 p-4 md:p-8">
-        <div className="mb-6">
-          <SidebarTrigger className="md:hidden hover:bg-accent/50 rounded-lg p-2 transition-colors" />
+      <main className="flex-1">
+        <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container">
+            <SidebarTrigger asChild>
+              <Button
+                variant="ghost"
+                className="md:hidden w-full justify-between py-6"
+              >
+                <span className="font-semibold">Menu</span>
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </SidebarTrigger>
+          </div>
         </div>
-        <Outlet />
+        <div className="p-4 md:p-8">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
