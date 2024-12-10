@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   ChevronDown, 
   ChevronRight, 
@@ -12,15 +13,9 @@ import {
   MessageSquare, 
   TrashIcon,
   Eye,
-  Users
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CoveredMembersOverview } from "@/components/members/CoveredMembersOverview";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 // Sample data structure with covered members
 const members = [
@@ -67,24 +62,10 @@ export default function Members() {
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
           Members Management
         </h1>
-        <div className="flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                <Users className="h-4 w-4" />
-                Covered Members
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[800px] p-4">
-              <CoveredMembersOverview members={members} />
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button className="flex items-center gap-2">
-            <UserPlus className="h-4 w-4" />
-            Add Member
-          </Button>
-        </div>
+        <Button className="flex items-center gap-2">
+          <UserPlus className="h-4 w-4" />
+          Add Member
+        </Button>
       </div>
 
       <div className="flex items-center space-x-2">
@@ -98,6 +79,8 @@ export default function Members() {
           />
         </div>
       </div>
+
+      <CoveredMembersOverview members={members} />
 
       <ScrollArea className="h-[calc(100vh-220px)]">
         <div className="space-y-4">
