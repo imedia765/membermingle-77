@@ -60,21 +60,21 @@ export function NavigationMenu() {
                 </div>
                 <Button
                   variant="outline"
-                  className="justify-start"
+                  className="justify-start text-primary hover:bg-primary/10 hover:text-primary-foreground"
                   onClick={() => handleNavigation("/login")}
                 >
                   Login
                 </Button>
                 <Button
                   variant="outline"
-                  className="justify-start"
+                  className="justify-start text-secondary hover:bg-secondary/10 hover:text-secondary-foreground"
                   onClick={() => handleNavigation("/register")}
                 >
                   Register
                 </Button>
                 <Button
                   variant="outline"
-                  className="justify-start"
+                  className="justify-start text-accent hover:bg-accent/10 hover:text-accent-foreground"
                   onClick={() => handleNavigation("/admin")}
                 >
                   Admin Panel
