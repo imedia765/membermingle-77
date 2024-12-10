@@ -1,22 +1,21 @@
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { 
   ChevronDown, 
   ChevronRight, 
-  Search, 
-  UserPlus, 
   Edit2, 
   MessageSquare, 
   TrashIcon,
   Eye,
-  Users,
+  UserPlus,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CoveredMembersOverview } from "@/components/members/CoveredMembersOverview";
+import { MembersHeader } from "@/components/members/MembersHeader";
+import { MembersSearch } from "@/components/members/MembersSearch";
 import {
   Collapsible,
   CollapsibleContent,
@@ -57,7 +56,6 @@ export default function Members() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedMember, setExpandedMember] = useState<number | null>(null);
   const [editingNotes, setEditingNotes] = useState<number | null>(null);
-  const [showPayingMembers, setShowPayingMembers] = useState(false);
 
   const toggleMember = (memberId: number) => {
     setExpandedMember(expandedMember === memberId ? null : memberId);
@@ -65,28 +63,8 @@ export default function Members() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-          Members Management
-        </h1>
-        <Button className="flex items-center gap-2">
-          <UserPlus className="h-4 w-4" />
-          Add Member
-        </Button>
-      </div>
-
-      <div className="flex items-center space-x-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Search members..." 
-            className="pl-8" 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-      </div>
-
+      <MembersHeader />
+      <MembersSearch searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <CoveredMembersOverview members={members} />
 
       <Card className="mb-4">
@@ -98,7 +76,7 @@ export default function Members() {
                 className="flex items-center gap-2 w-full justify-between bg-primary hover:bg-primary/90"
               >
                 <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4" />
+                  <UserPlus className="h-4 w-4" />
                   <span>Paying Members Overview</span>
                 </div>
                 <ChevronDown className="h-4 w-4" />
