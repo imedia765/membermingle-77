@@ -3,8 +3,39 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, UserPlus, ChevronDown, ChevronRight, Edit2 } from "lucide-react";
+import { Search, UserPlus, ChevronDown, ChevronRight, Edit2, Trash2, UserCheck, Ban } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useToast } from "@/components/ui/use-toast";
+
+export default function Collectors() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [expandedCollector, setExpandedCollector] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const toggleCollector = (collectorId: string) => {
+    setExpandedCollector(expandedCollector === collectorId ? null : collectorId);
+  };
+
+  const handleDeleteCollector = (collectorId: string) => {
+    toast({
+      title: "Collector deleted",
+      description: `Collector ${collectorId} has been removed.`,
+    });
+  };
+
+  const handleActivateCollector = (collectorId: string) => {
+    toast({
+      title: "Collector activated",
+      description: `Collector ${collectorId} has been activated.`,
+    });
+  };
+
+  const handleDeactivateCollector = (collectorId: string) => {
+    toast({
+      title: "Collector deactivated",
+      description: `Collector ${collectorId} has been deactivated.`,
+    });
+  };
 
 // Sample data structure
 const collectors = [
@@ -30,21 +61,13 @@ const collectors = [
   // ... other collectors
 ];
 
-export default function Collectors() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [expandedCollector, setExpandedCollector] = useState<string | null>(null);
-
-  const toggleCollector = (collectorId: string) => {
-    setExpandedCollector(expandedCollector === collectorId ? null : collectorId);
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold text-blue-600">
+        <h1 className="text-4xl font-bold text-white">
           Collectors Management
         </h1>
-        <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+        <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
           <UserPlus className="h-4 w-4" />
           Add Collector
         </Button>
@@ -82,18 +105,51 @@ export default function Collectors() {
                       )}
                     </Button>
                     <div>
-                      <CardTitle className="text-xl text-blue-600">
+                      <CardTitle className="text-xl text-white">
                         {collector.id} - {collector.name}
                       </CardTitle>
-                      <p className="text-sm text-blue-600 inline-block px-2 py-0.5">
+                      <p className="text-sm text-white inline-block px-2 py-0.5">
                         Members: {collector.members}
                       </p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
-                    <Edit2 className="h-4 w-4 mr-2" />
-                    Edit
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={() => handleActivateCollector(collector.id)}
+                    >
+                      <UserCheck className="h-4 w-4 mr-2" />
+                      Activate
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={() => handleDeactivateCollector(collector.id)}
+                    >
+                      <Ban className="h-4 w-4 mr-2" />
+                      Deactivate
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      <Edit2 className="h-4 w-4 mr-2" />
+                      Edit
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                      onClick={() => handleDeleteCollector(collector.id)}
+                    >
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               {expandedCollector === collector.id && (
@@ -101,21 +157,21 @@ export default function Collectors() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead className="text-blue-600">Name</TableHead>
-                        <TableHead className="text-blue-600">Member ID</TableHead>
-                        <TableHead className="text-blue-600">Email</TableHead>
-                        <TableHead className="text-blue-600">Contact Number</TableHead>
-                        <TableHead className="text-blue-600">Address</TableHead>
+                        <TableHead className="text-white">Name</TableHead>
+                        <TableHead className="text-white">Member ID</TableHead>
+                        <TableHead className="text-white">Email</TableHead>
+                        <TableHead className="text-white">Contact Number</TableHead>
+                        <TableHead className="text-white">Address</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {collector.membersList.map((member) => (
                         <TableRow key={member.memberId}>
-                          <TableCell>{member.name}</TableCell>
-                          <TableCell>{member.memberId}</TableCell>
-                          <TableCell>{member.email}</TableCell>
-                          <TableCell>{member.contact}</TableCell>
-                          <TableCell>{member.address}</TableCell>
+                          <TableCell className="text-white">{member.name}</TableCell>
+                          <TableCell className="text-white">{member.memberId}</TableCell>
+                          <TableCell className="text-white">{member.email}</TableCell>
+                          <TableCell className="text-white">{member.contact}</TableCell>
+                          <TableCell className="text-white">{member.address}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
