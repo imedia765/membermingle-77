@@ -65,11 +65,11 @@ const collectors = [
 
   return (
     <div className="space-y-6">
-      <div className={`${isMobile ? 'space-y-4' : 'flex justify-between items-center'}`}>
+      <div className="flex flex-col space-y-4">
         <h1 className="text-4xl font-bold text-white">
           Collectors Management
         </h1>
-        <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white">
+        <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white w-full md:w-auto">
           <UserPlus className="h-4 w-4" />
           Add New Collector
         </Button>
@@ -91,8 +91,8 @@ const collectors = [
         <div className="space-y-4">
           {collectors.map((collector) => (
             <Card key={collector.id}>
-              <CardHeader className={`py-3 ${isMobile ? 'space-y-4' : ''}`}>
-                <div className={`flex flex-col gap-4`}>
+              <CardHeader className="py-3">
+                <div className="flex flex-col space-y-4">
                   <div className="flex items-center gap-4">
                     <Button
                       variant="ghost"
@@ -116,11 +116,11 @@ const collectors = [
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                     <Button 
                       variant="outline" 
                       size="default"
-                      className="bg-green-600 hover:bg-green-700 text-white min-w-[120px]"
+                      className="bg-green-600 hover:bg-green-700 text-white w-full"
                       onClick={() => handleActivateCollector(collector.id)}
                     >
                       <UserCheck className="h-4 w-4 mr-2" />
@@ -129,7 +129,7 @@ const collectors = [
                     <Button 
                       variant="outline" 
                       size="default"
-                      className="bg-yellow-600 hover:bg-yellow-700 text-white min-w-[120px]"
+                      className="bg-yellow-600 hover:bg-yellow-700 text-white w-full"
                       onClick={() => handleDeactivateCollector(collector.id)}
                     >
                       <Ban className="h-4 w-4 mr-2" />
@@ -138,7 +138,7 @@ const collectors = [
                     <Button 
                       variant="outline" 
                       size="default"
-                      className="bg-blue-600 hover:bg-blue-700 text-white min-w-[120px]"
+                      className="bg-blue-600 hover:bg-blue-700 text-white w-full"
                     >
                       <Edit2 className="h-4 w-4 mr-2" />
                       Edit Details
@@ -146,7 +146,7 @@ const collectors = [
                     <Button 
                       variant="outline" 
                       size="default"
-                      className="bg-red-600 hover:bg-red-700 text-white min-w-[120px]"
+                      className="bg-red-600 hover:bg-red-700 text-white w-full"
                       onClick={() => handleDeleteCollector(collector.id)}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
