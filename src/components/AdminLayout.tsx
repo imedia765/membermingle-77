@@ -1,16 +1,11 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Users, UserCheck, ClipboardList, Database, DollarSign, UserCircle, ChevronDown } from "lucide-react";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { useSidebar } from "@/components/ui/sidebar";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
 
 const menuItems = [
@@ -23,69 +18,44 @@ const menuItems = [
   { icon: UserCircle, label: "Profile", to: "/admin/profile" },
 ];
 
-function AdminLayoutContent() {
-  const { setOpenMobile } = useSidebar();
+export function AdminLayout() {
   const navigate = useNavigate();
 
-  const handleNavigation = (path: string) => {
-    setOpenMobile(false);
-    navigate(path);
-  };
-
   return (
-    <div className="min-h-screen flex w-full bg-background">
-      <Sidebar>
-        <SidebarHeader className="p-6">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            Admin Panel
-          </h1>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarMenu>
-            {menuItems.map((item) => (
-              <SidebarMenuItem key={item.to}>
-                <SidebarMenuButton
-                  tooltip={item.label}
-                  onClick={() => handleNavigation(item.to)}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-accent/50 rounded-lg transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-
-      {/* Main content */}
-      <main className="flex-1">
-        <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container">
-            <div className="flex md:hidden">
+    <div className="min-h-screen flex flex-col w-full bg-background">
+      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container py-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <Button
-                variant="ghost"
-                className="w-full justify-between py-6"
-                onClick={() => setOpenMobile(true)}
+                variant="outline"
+                className="w-full justify-between"
               >
                 <span className="font-semibold">Menu</span>
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 opacity-50" />
               </Button>
-            </div>
-          </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full">
+              {menuItems.map((item) => (
+                <DropdownMenuItem
+                  key={item.to}
+                  onClick={() => navigate(item.to)}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
+      </div>
+
+      <main className="flex-1">
         <div className="p-4 md:p-8">
           <Outlet />
         </div>
       </main>
     </div>
-  );
-}
-
-export function AdminLayout() {
-  return (
-    <SidebarProvider>
-      <AdminLayoutContent />
-    </SidebarProvider>
   );
 }
