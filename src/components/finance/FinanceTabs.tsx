@@ -13,7 +13,7 @@ interface FinanceTabsProps {
 export function FinanceTabs({ activeTab, setActiveTab }: FinanceTabsProps) {
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-4">
-      <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 gap-2">
+      <TabsList className="w-full grid grid-cols-3 gap-2">
         <TabsTrigger value="overview" className="w-full">Overview</TabsTrigger>
         <TabsTrigger value="payments" className="w-full">Payments</TabsTrigger>
         <TabsTrigger value="expenses" className="w-full">Expenses</TabsTrigger>
