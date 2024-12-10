@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, Download, Filter } from "lucide-react";
@@ -9,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { FinanceHeader } from "@/components/finance/FinanceHeader";
 import { FinanceStats } from "@/components/finance/FinanceStats";
 import { SearchTransactions } from "@/components/finance/SearchTransactions";
+import { TransactionsTable } from "@/components/finance/TransactionsTable";
 
 // Mock data
 const transactions = [
@@ -31,19 +31,19 @@ export default function Finance() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 container px-4">
       <FinanceHeader />
       <FinanceStats />
 
-      <div className="flex items-center space-x-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <SearchTransactions searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="w-full sm:w-auto">
           <Filter className="h-4 w-4" />
         </Button>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="w-full justify-start border-b">
+        <TabsList className="w-full justify-start overflow-x-auto flex-nowrap border-b">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="payments">Payments</TabsTrigger>
           <TabsTrigger value="expenses">Expenses</TabsTrigger>
@@ -62,28 +62,7 @@ export default function Finance() {
               </div>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Member/Description</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {transactions.map((transaction) => (
-                    <TableRow key={transaction.id}>
-                      <TableCell>{transaction.member}</TableCell>
-                      <TableCell>{transaction.type}</TableCell>
-                      <TableCell>{transaction.date}</TableCell>
-                      <TableCell className={transaction.amount < 0 ? "text-red-500" : "text-green-500"}>
-                        £{Math.abs(transaction.amount)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <TransactionsTable transactions={transactions} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -95,9 +74,9 @@ export default function Finance() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <Select>
-                    <SelectTrigger className="max-w-xs">
+                    <SelectTrigger className="w-full sm:w-[200px]">
                       <SelectValue placeholder="Filter by collector" />
                     </SelectTrigger>
                     <SelectContent>
@@ -108,39 +87,14 @@ export default function Finance() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <Button variant="outline">
+                  <Button variant="outline" className="w-full sm:w-auto">
                     <Download className="mr-2 h-4 w-4" />
                     Export
                   </Button>
                 </div>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Member</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Collector</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {transactions
-                      .filter((t) => t.amount > 0)
-                      .map((transaction) => (
-                        <TableRow key={transaction.id}>
-                          <TableCell>{transaction.member}</TableCell>
-                          <TableCell>£{transaction.amount}</TableCell>
-                          <TableCell>{transaction.date}</TableCell>
-                          <TableCell>{transaction.collector}</TableCell>
-                          <TableCell>
-                            <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800">
-                              Completed
-                            </span>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
+                <TransactionsTable 
+                  transactions={transactions.filter((t) => t.amount > 0)} 
+                />
               </div>
             </CardContent>
           </Card>
