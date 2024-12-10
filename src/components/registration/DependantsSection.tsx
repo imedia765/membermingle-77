@@ -84,7 +84,7 @@ export const DependantsSection = () => {
                 type="button" 
                 variant="outline"
                 onClick={addDependant}
-                className="bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
+                className="bg-green-500 hover:bg-green-600 text-white border-0"
               >
                 Add Dependant
               </Button>
@@ -103,7 +103,7 @@ export const DependantsSection = () => {
             type="button" 
             variant="outline" 
             onClick={addDependant} 
-            className="w-full bg-primary/5 hover:bg-primary/10 text-primary border-primary/20"
+            className="w-full bg-green-500 hover:bg-green-600 text-white border-0"
           >
             Add Dependant
           </Button>
