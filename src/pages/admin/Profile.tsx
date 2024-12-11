@@ -1,6 +1,7 @@
 import { Receipt, Ticket, HeadsetIcon, File, MailIcon, PhoneCall } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { AccountSettingsSection } from "@/components/profile/AccountSettingsSection";
+import { TicketingSection } from "@/components/profile/TicketingSection";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -21,11 +22,6 @@ export default function Profile() {
     { date: '2024-02-15', amount: '£50.00', status: 'Paid', type: 'Membership Fee' },
   ];
 
-  const tickets = [
-    { id: '#1234', date: '2024-03-10', subject: 'Account Access', status: 'Open' },
-    { id: '#1233', date: '2024-02-28', subject: 'Payment Issue', status: 'Closed' },
-  ];
-
   const documents = [
     { name: 'ID Document.pdf', uploadDate: '2024-03-01', type: 'Identification' },
     { name: 'Proof of Address.pdf', uploadDate: '2024-02-15', type: 'Address Proof' },
@@ -39,6 +35,24 @@ export default function Profile() {
 
       <div className="space-y-6">
         <AccountSettingsSection />
+
+        {/* Support Tickets Section */}
+        <Collapsible>
+          <CollapsibleTrigger asChild>
+            <Button 
+              variant="default"
+              className="flex items-center gap-2 w-full justify-between bg-primary hover:bg-primary/90"
+            >
+              <div className="flex items-center gap-2">
+                <Ticket className="h-4 w-4" />
+                <span>Support Tickets</span>
+              </div>
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="pt-4">
+            <TicketingSection />
+          </CollapsibleContent>
+        </Collapsible>
 
         {/* Payment History Section */}
         <Collapsible>
@@ -71,45 +85,6 @@ export default function Profile() {
                       <TableCell>{payment.type}</TableCell>
                       <TableCell>{payment.amount}</TableCell>
                       <TableCell>{payment.status}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
-          </CollapsibleContent>
-        </Collapsible>
-
-        {/* Support Tickets Section */}
-        <Collapsible>
-          <CollapsibleTrigger asChild>
-            <Button 
-              variant="default"
-              className="flex items-center gap-2 w-full justify-between bg-primary hover:bg-primary/90"
-            >
-              <div className="flex items-center gap-2">
-                <Ticket className="h-4 w-4" />
-                <span>Support Tickets</span>
-              </div>
-            </Button>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="pt-4">
-            <ScrollArea className="h-[300px]">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Ticket ID</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Subject</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {tickets.map((ticket, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{ticket.id}</TableCell>
-                      <TableCell>{ticket.date}</TableCell>
-                      <TableCell>{ticket.subject}</TableCell>
-                      <TableCell>{ticket.status}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
