@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download, Upload, RefreshCw, FileJson } from "lucide-react";
 import { transformMemberData } from "@/utils/dataTransform";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Database() {
   const { toast } = useToast();
@@ -13,7 +13,32 @@ export default function Database() {
 
     try {
       const text = await file.text();
-      const jsonData = JSON.parse(text);
+      
+      // Clean the JSON string before parsing
+      const cleanedText = text
+        .replace(/,(\s*})/g, '$1') // Remove trailing commas
+        .replace(/,(\s*])/g, '$1') // Remove trailing commas in arrays
+        .replace(/\n\s*\n/g, '\n') // Remove empty lines
+        .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":'); // Ensure property names are quoted
+      
+      let jsonData;
+      try {
+        jsonData = JSON.parse(cleanedText);
+      } catch (parseError) {
+        console.error('JSON Parse Error:', parseError);
+        toast({
+          title: "Invalid JSON Format",
+          description: "Please ensure your JSON file is properly formatted. Common issues include missing quotes around property names or trailing commas.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Ensure the data is an array
+      if (!Array.isArray(jsonData)) {
+        jsonData = [jsonData];
+      }
+
       const transformedData = transformMemberData(jsonData);
 
       // Create a blob with the transformed data
@@ -37,7 +62,7 @@ export default function Database() {
       console.error('Error processing file:', error);
       toast({
         title: "Error processing file",
-        description: "Please ensure you've uploaded a valid JSON file.",
+        description: "An error occurred while processing your file. Please check the console for details.",
         variant: "destructive",
       });
     }
