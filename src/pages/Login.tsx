@@ -70,7 +70,7 @@ export default function Login() {
             </div>
           </div>
 
-          <Tabs defaultValue="email" className="w-full">
+          <Tabs defaultValue="memberId" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-4">
               <TabsTrigger 
                 value="email" 
