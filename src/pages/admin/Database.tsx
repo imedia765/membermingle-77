@@ -14,28 +14,62 @@ export default function Database() {
     try {
       const text = await file.text();
       
-      // Enhanced JSON string cleaning
-      const cleanedText = text
-        .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1') // Remove comments
-        .replace(/,(\s*[}\]])/g, '$1') // Remove trailing commas
-        .replace(/([{,])\s*([a-zA-Z0-9_$]+)\s*:/g, '$1"$2":') // Quote unquoted keys
-        .replace(/:\s*'([^']*)'/g, ':"$1"') // Convert single quotes to double quotes
-        .replace(/\n\s*\n/g, '\n') // Remove empty lines
+      // More aggressive JSON string cleaning
+      let cleanedText = text
+        // Remove comments
+        .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '')
+        // Remove trailing commas
+        .replace(/,(\s*[}\]])/g, '$1')
+        // Quote all unquoted keys (more comprehensive)
+        .replace(/({|,)\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:/g, '$1"$2":')
+        // Convert single quotes to double quotes
+        .replace(/'([^']*)'/g, '"$1"')
+        // Remove whitespace between values
+        .replace(/\s+/g, ' ')
+        // Remove empty lines and trim
         .trim();
+
+      // Additional cleanup for common JSON issues
+      cleanedText = cleanedText
+        // Fix multiple consecutive commas
+        .replace(/,\s*,/g, ',')
+        // Remove commas before closing brackets
+        .replace(/,\s*([\]}])/g, '$1')
+        // Ensure proper array/object closure
+        .replace(/([{\[])\s*,/g, '$1');
 
       let jsonData;
       try {
         jsonData = JSON.parse(cleanedText);
       } catch (parseError) {
         console.error('JSON Parse Error:', parseError);
-        const errorPosition = (parseError as SyntaxError).message.match(/position (\d+)/)?.[1];
-        const errorContext = errorPosition 
-          ? `...${cleanedText.slice(Math.max(0, Number(errorPosition) - 20), Number(errorPosition))}[ERROR HERE]${cleanedText.slice(Number(errorPosition), Number(errorPosition) + 20)}...`
-          : '';
         
+        // Enhanced error context
+        const errorMessage = (parseError as SyntaxError).message;
+        const positionMatch = errorMessage.match(/position (\d+)/);
+        let errorContext = '';
+        
+        if (positionMatch) {
+          const position = parseInt(positionMatch[1]);
+          const start = Math.max(0, position - 50);
+          const end = Math.min(cleanedText.length, position + 50);
+          
+          errorContext = cleanedText.slice(start, end)
+            .split('\n')
+            .map((line, i) => {
+              if (line.length > 100) {
+                return line.slice(0, 50) + '...' + line.slice(-50);
+              }
+              return line;
+            })
+            .join('\n');
+            
+          errorContext = `\n...${errorContext}...\n[Error near position ${position}]`;
+        }
+
         toast({
           title: "Invalid JSON Format",
-          description: `Please check your JSON formatting. Error near: ${errorContext}. Common issues include missing quotes around property names, trailing commas, or invalid values.`,
+          description: `Please check your JSON formatting. ${errorMessage}${errorContext}\n\nCommon issues include:\n- Missing quotes around property names\n- Trailing commas\n- Unmatched brackets\n- Invalid values`,
           variant: "destructive",
         });
         return;
