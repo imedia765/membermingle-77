@@ -18,7 +18,7 @@ export const AccountSettingsSection = () => {
         >
           <div className="flex items-center gap-2">
             <Cog className="h-4 w-4" />
-            <span>Account Settings</span>
+            <span>Profile Settings</span>
           </div>
         </Button>
       </CollapsibleTrigger>
