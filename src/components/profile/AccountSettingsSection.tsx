@@ -129,7 +129,7 @@ export const AccountSettingsSection = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button>Update Profile</Button>
+          <Button className="bg-green-500 hover:bg-green-600">Update Profile</Button>
         </div>
       </CollapsibleContent>
     </Collapsible>
