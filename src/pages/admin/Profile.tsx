@@ -30,7 +30,7 @@ export default function Profile() {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-        Profile Settings
+        Members Profile
       </h1>
 
       <div className="space-y-6">
