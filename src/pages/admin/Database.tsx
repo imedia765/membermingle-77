@@ -14,21 +14,28 @@ export default function Database() {
     try {
       const text = await file.text();
       
-      // Clean the JSON string before parsing
+      // Enhanced JSON string cleaning
       const cleanedText = text
-        .replace(/,(\s*})/g, '$1') // Remove trailing commas
-        .replace(/,(\s*])/g, '$1') // Remove trailing commas in arrays
+        .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1') // Remove comments
+        .replace(/,(\s*[}\]])/g, '$1') // Remove trailing commas
+        .replace(/([{,])\s*([a-zA-Z0-9_$]+)\s*:/g, '$1"$2":') // Quote unquoted keys
+        .replace(/:\s*'([^']*)'/g, ':"$1"') // Convert single quotes to double quotes
         .replace(/\n\s*\n/g, '\n') // Remove empty lines
-        .replace(/([{,]\s*)([a-zA-Z0-9_]+)\s*:/g, '$1"$2":'); // Ensure property names are quoted
-      
+        .trim();
+
       let jsonData;
       try {
         jsonData = JSON.parse(cleanedText);
       } catch (parseError) {
         console.error('JSON Parse Error:', parseError);
+        const errorPosition = (parseError as SyntaxError).message.match(/position (\d+)/)?.[1];
+        const errorContext = errorPosition 
+          ? `...${cleanedText.slice(Math.max(0, Number(errorPosition) - 20), Number(errorPosition))}[ERROR HERE]${cleanedText.slice(Number(errorPosition), Number(errorPosition) + 20)}...`
+          : '';
+        
         toast({
           title: "Invalid JSON Format",
-          description: "Please ensure your JSON file is properly formatted. Common issues include missing quotes around property names or trailing commas.",
+          description: `Please check your JSON formatting. Error near: ${errorContext}. Common issues include missing quotes around property names, trailing commas, or invalid values.`,
           variant: "destructive",
         });
         return;
