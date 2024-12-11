@@ -52,10 +52,11 @@ export default function Login() {
         <CardContent>
           <Button 
             variant="outline" 
-            className="w-full mb-6 h-12 text-lg bg-white hover:bg-gray-50 border-2 shadow-sm" 
+            className="w-full mb-6 h-12 text-lg bg-white hover:bg-gray-50 border-2 shadow-sm text-gray-700 font-medium" 
             onClick={handleGoogleLogin}
           >
             <Icons.google className="mr-2 h-5 w-5" />
+            <Icons.palette className="mr-2 h-5 w-5 text-primary" />
             Continue with Google
           </Button>
           

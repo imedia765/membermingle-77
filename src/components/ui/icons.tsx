@@ -22,6 +22,7 @@ import {
   Trash,
   Twitter,
   User,
+  Palette,
   X,
   type Icon as LucideIcon,
 } from "lucide-react"
@@ -49,6 +50,7 @@ export const Icons = {
   pizza: Pizza,
   sun: SunMedium,
   moon: Moon,
+  palette: Palette,
   check: Check,
   google: ({ ...props }: LucideProps) => (
     <svg
