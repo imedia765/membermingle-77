@@ -1,3 +1,5 @@
+import { generateMemberNumber } from './memberNumbering';
+
 interface RawMember {
   address: string;
   collector: string;
