@@ -5,6 +5,7 @@ import { TicketingSection } from "@/components/profile/TicketingSection";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -13,14 +14,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useState } from "react";
 
 export default function Profile() {
   const { toast } = useToast();
+  const [searchDate, setSearchDate] = useState("");
+  const [searchAmount, setSearchAmount] = useState("");
 
   const paymentHistory = [
     { date: '2024-03-15', amount: '£50.00', status: 'Paid', type: 'Membership Fee' },
     { date: '2024-02-15', amount: '£50.00', status: 'Paid', type: 'Membership Fee' },
   ];
+
+  const filteredPayments = paymentHistory.filter(payment => {
+    const matchesDate = searchDate ? payment.date.includes(searchDate) : true;
+    const matchesAmount = searchAmount ? payment.amount.includes(searchAmount) : true;
+    return matchesDate && matchesAmount;
+  });
 
   const documents = [
     { name: 'ID Document.pdf', uploadDate: '2024-03-01', type: 'Identification' },
@@ -68,28 +78,51 @@ export default function Profile() {
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className="pt-4">
-            <ScrollArea className="h-[300px]">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paymentHistory.map((payment, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{payment.date}</TableCell>
-                      <TableCell>{payment.type}</TableCell>
-                      <TableCell>{payment.amount}</TableCell>
-                      <TableCell>{payment.status}</TableCell>
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="text-sm font-medium">Search by Date</label>
+                  <Input
+                    type="date"
+                    value={searchDate}
+                    onChange={(e) => setSearchDate(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="text-sm font-medium">Search by Amount</label>
+                  <Input
+                    type="text"
+                    placeholder="e.g. £50.00"
+                    value={searchAmount}
+                    onChange={(e) => setSearchAmount(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+              </div>
+              <ScrollArea className="h-[300px]">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Status</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredPayments.map((payment, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{payment.date}</TableCell>
+                        <TableCell>{payment.type}</TableCell>
+                        <TableCell>{payment.amount}</TableCell>
+                        <TableCell>{payment.status}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </ScrollArea>
+            </div>
           </CollapsibleContent>
         </Collapsible>
 
