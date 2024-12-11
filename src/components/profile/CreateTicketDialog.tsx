@@ -16,8 +16,9 @@ interface CreateTicketDialogProps {
   newTicket: {
     subject: string;
     message: string;
+    phoneNumber?: string;
   };
-  setNewTicket: (ticket: { subject: string; message: string }) => void;
+  setNewTicket: (ticket: { subject: string; message: string; phoneNumber?: string }) => void;
   handleCreateTicket: () => void;
 }
 
@@ -47,6 +48,14 @@ export function CreateTicketDialog({
             value={newTicket.subject}
             onChange={(e) =>
               setNewTicket({ ...newTicket, subject: e.target.value })
+            }
+          />
+          <Input
+            type="tel"
+            placeholder="Phone Number"
+            value={newTicket.phoneNumber}
+            onChange={(e) =>
+              setNewTicket({ ...newTicket, phoneNumber: e.target.value })
             }
           />
           <Textarea
