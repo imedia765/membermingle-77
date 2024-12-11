@@ -1,62 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useLoadScript, Autocomplete } from "@react-google-maps/api";
-import { useState, useCallback } from "react";
-import { useToast } from "@/components/ui/use-toast";
 
 interface PersonalInfoProps {
   register: any; // Replace with proper type when form handling is implemented
 }
 
-const libraries: ("places")[] = ["places"];
-
 export const PersonalInfoSection = ({ register }: PersonalInfoProps) => {
-  const { toast } = useToast();
-  const [address, setAddress] = useState("");
-  const [town, setTown] = useState("");
-  const [postCode, setPostCode] = useState("");
-
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
-    libraries,
-  });
-
-  const handlePlaceSelect = useCallback((place: google.maps.places.PlaceResult) => {
-    if (!place.address_components) return;
-
-    let streetNumber = "";
-    let route = "";
-    let locality = "";
-    let postalCode = "";
-
-    place.address_components.forEach((component) => {
-      const types = component.types;
-      if (types.includes("street_number")) {
-        streetNumber = component.long_name;
-      }
-      if (types.includes("route")) {
-        route = component.long_name;
-      }
-      if (types.includes("postal_town") || types.includes("locality")) {
-        locality = component.long_name;
-      }
-      if (types.includes("postal_code")) {
-        postalCode = component.long_name;
-      }
-    });
-
-    const fullAddress = `${streetNumber} ${route}`.trim();
-    setAddress(fullAddress);
-    setTown(locality);
-    setPostCode(postalCode);
-
-    toast({
-      title: "Address Selected",
-      description: "Address details have been automatically filled.",
-    });
-  }, [toast]);
-
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Personal Information</h3>
@@ -67,47 +17,15 @@ export const PersonalInfoSection = ({ register }: PersonalInfoProps) => {
         </div>
         <div className="space-y-2">
           <label htmlFor="address">Address</label>
-          {isLoaded ? (
-            <Autocomplete
-              onLoad={(autocomplete) => {
-                autocomplete.setFields(['address_components', 'formatted_address']);
-              }}
-              onPlaceChanged={() => {
-                const autocomplete = document.querySelector<HTMLInputElement>('input[id="address"]');
-                if (autocomplete) {
-                  const place = (autocomplete as any).getPlace();
-                  handlePlaceSelect(place);
-                }
-              }}
-            >
-              <Textarea 
-                id="address" 
-                required 
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-            </Autocomplete>
-          ) : (
-            <Textarea id="address" required />
-          )}
+          <Textarea id="address" required />
         </div>
         <div className="space-y-2">
           <label htmlFor="town">Town</label>
-          <Input 
-            id="town" 
-            required 
-            value={town}
-            onChange={(e) => setTown(e.target.value)}
-          />
+          <Input id="town" required />
         </div>
         <div className="space-y-2">
           <label htmlFor="postCode">Post Code</label>
-          <Input 
-            id="postCode" 
-            required 
-            value={postCode}
-            onChange={(e) => setPostCode(e.target.value)}
-          />
+          <Input id="postCode" required />
         </div>
         <div className="space-y-2">
           <label htmlFor="email">Email</label>
