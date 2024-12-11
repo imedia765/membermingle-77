@@ -72,8 +72,18 @@ export default function Login() {
 
           <Tabs defaultValue="email" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="email">Email</TabsTrigger>
-              <TabsTrigger value="memberId">Member ID</TabsTrigger>
+              <TabsTrigger 
+                value="email" 
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Email
+              </TabsTrigger>
+              <TabsTrigger 
+                value="memberId"
+                className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              >
+                Member ID
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="email">
