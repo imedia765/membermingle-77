@@ -1,5 +1,5 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, UserCheck, ClipboardList, Database, DollarSign, UserCircle, ChevronDown } from "lucide-react";
+import { LayoutDashboard, Users, UserCheck, ClipboardList, Database, DollarSign, UserCircle, ChevronDown, HeadsetIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +15,7 @@ const menuItems = [
   { icon: ClipboardList, label: "Registrations", to: "/admin/registrations" },
   { icon: Database, label: "Database", to: "/admin/database" },
   { icon: DollarSign, label: "Finance", to: "/admin/finance" },
+  { icon: HeadsetIcon, label: "Support Tickets", to: "/admin/support" },
   { icon: UserCircle, label: "Profile", to: "/admin/profile" },
 ];
 
@@ -28,7 +29,7 @@ export function AdminLayout() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="default"  // Changed from "outline" to "default" to make it blue
+                variant="default"
                 className="w-full justify-between h-12"
               >
                 <span className="font-semibold">Menu</span>
