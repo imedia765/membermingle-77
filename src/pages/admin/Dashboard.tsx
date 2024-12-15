@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card/card';
 import { Users, UserCheck, ClipboardList, DollarSign, TrendingUp, ArrowUpRight, ArrowDownRight, Activity } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -38,12 +37,13 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch total members
-        const { data: membersData, error: membersError } = await supabase
+        // Fetch total members using count
+        const { count: membersCount, error: membersError } = await supabase
           .from("members")
-          .select("*", { count: 'exact' });
+          .select('*', { count: 'exact', head: true });
+        
         if (membersError) throw membersError;
-        setTotalMembers(membersData.length);
+        setTotalMembers(membersCount || 0);
 
         // Fetch active collectors
         const { data: collectorsData, error: collectorsError } = await supabase
@@ -298,3 +298,4 @@ function StatsCard({
     </Card>
   );
 }
+

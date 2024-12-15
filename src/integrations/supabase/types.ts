@@ -400,6 +400,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      merge_duplicate_collectors: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          merged_count: number
+          details: string
+        }[]
+      }
+      normalize_collector_name: {
+        Args: {
+          name: string
+        }
+        Returns: string
+      }
       sync_collector_ids: {
         Args: Record<PropertyKey, never>
         Returns: undefined
