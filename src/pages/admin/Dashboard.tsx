@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card/card';
 import { Users, UserCheck, ClipboardList, DollarSign, TrendingUp, ArrowUpRight, ArrowDownRight, Activity } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,9 +31,8 @@ export default function Dashboard() {
   const [activeCollectors, setActiveCollectors] = useState(0);
   const [pendingRegistrations, setPendingRegistrations] = useState(0);
   const [monthlyRevenue, setMonthlyRevenue] = useState(0);
-    const [membershipTypeData, setMembershipTypeData] = useState([]);
-    const [membershipData, setMembershipData] = useState([]);
-
+  const [membershipTypeData, setMembershipTypeData] = useState([]);
+  const [membershipData, setMembershipData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,7 +140,7 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 
   return (
@@ -298,4 +298,3 @@ function StatsCard({
     </Card>
   );
 }
-
