@@ -1,13 +1,14 @@
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { Search, Filter } from "lucide-react";
+import { Search } from "lucide-react";
 import { TicketDetailsDialog } from "@/components/support/TicketDetailsDialog";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { NoticesSection } from "@/components/support/NoticesSection";
+import { useState } from "react";
 
 interface TicketResponse {
   id: string;
@@ -92,8 +93,10 @@ export default function Support() {
   return (
     <div className="space-y-6">
       <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-        Support Tickets
+        Support Management
       </h1>
+
+      <NoticesSection />
 
       <Card>
         <CardHeader>
