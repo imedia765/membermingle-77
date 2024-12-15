@@ -1,17 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Download, Upload, RefreshCw } from "lucide-react";
+import { Download, Upload, RefreshCw, Merge } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ImportSection } from "@/components/database/ImportSection";
 import { exportDatabase, restoreDatabase } from "@/utils/databaseBackup";
+import { findDuplicateCollectors, mergeCollectors } from "@/utils/collectorCleanup";
 
 export default function Database() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isCleaningUp, setIsCleaningUp] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -78,6 +80,37 @@ export default function Database() {
     }
   };
 
+  const handleCleanupDuplicates = async () => {
+    try {
+      setIsCleaningUp(true);
+      const duplicates = await findDuplicateCollectors();
+      
+      if (duplicates.length === 0) {
+        toast({
+          title: "No duplicates found",
+          description: "Your database is clean - no duplicate collectors found.",
+        });
+        return;
+      }
+
+      await mergeCollectors(duplicates);
+      
+      toast({
+        title: "Cleanup successful",
+        description: `Merged ${duplicates.length} groups of duplicate collectors.`,
+      });
+    } catch (error) {
+      console.error('Cleanup error:', error);
+      toast({
+        title: "Cleanup failed",
+        description: error instanceof Error ? error.message : "An error occurred during cleanup",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCleaningUp(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
@@ -128,6 +161,25 @@ export default function Database() {
             >
               <Upload className="h-4 w-4" />
               Upload Backup
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Database Maintenance</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Clean up duplicate collectors and maintain database integrity.
+            </p>
+            <Button 
+              className="w-full flex items-center gap-2"
+              onClick={handleCleanupDuplicates}
+              disabled={isCleaningUp}
+            >
+              <Merge className="h-4 w-4" />
+              {isCleaningUp ? "Cleaning up..." : "Clean Up Duplicates"}
             </Button>
           </CardContent>
         </Card>
