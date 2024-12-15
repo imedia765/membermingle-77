@@ -14,39 +14,40 @@ export async function processCollectors(validData: CsvData[], userId: string) {
 
   for (const collectorName of uniqueCollectors) {
     try {
-      const { data: existingCollectors, error: searchError } = await supabase
+      // First try to find existing collector
+      const { data: existingCollector } = await supabase
         .from('collectors')
         .select('id')
-        .eq('name', collectorName);
+        .ilike('name', collectorName)
+        .single();
 
-      if (searchError) {
-        console.error('Error searching for collector:', searchError);
+      if (existingCollector) {
+        collectorIdMap.set(collectorName, existingCollector.id);
+        console.log('Using existing collector:', { id: existingCollector.id, name: collectorName });
         continue;
       }
 
-      let collectorId: string;
-
-      if (!existingCollectors || existingCollectors.length === 0) {
-        const collectorData = await transformCollectorForSupabase(collectorName);
-        const { data: newCollector, error: insertError } = await supabase
-          .from('collectors')
-          .insert(collectorData)
-          .select('id')
-          .single();
-
-        if (insertError) {
-          console.error('Error inserting collector:', insertError);
-          continue;
-        }
-
-        collectorId = newCollector.id;
-        console.log('Created new collector:', { id: collectorId, name: collectorName });
-      } else {
-        collectorId = existingCollectors[0].id;
-        console.log('Using existing collector:', { id: collectorId, name: collectorName });
+      // If no existing collector, create new one
+      const collectorData = await transformCollectorForSupabase(collectorName);
+      if (!collectorData) {
+        // This shouldn't happen since we already checked for existing collector
+        console.warn('Unexpected null collector data for:', collectorName);
+        continue;
       }
 
-      collectorIdMap.set(collectorName, collectorId);
+      const { data: newCollector, error: insertError } = await supabase
+        .from('collectors')
+        .insert(collectorData)
+        .select('id')
+        .single();
+
+      if (insertError) {
+        console.error('Error inserting collector:', insertError);
+        continue;
+      }
+
+      collectorIdMap.set(collectorName, newCollector.id);
+      console.log('Created new collector:', { id: newCollector.id, name: collectorName });
     } catch (error) {
       console.error(`Error processing collector ${collectorName}:`, error);
     }

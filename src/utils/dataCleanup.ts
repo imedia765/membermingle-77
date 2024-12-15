@@ -67,9 +67,21 @@ export function transformMemberForSupabase(memberData: any): TablesInsert<'membe
 }
 
 // Transform collector data to match Supabase schema
-export async function transformCollectorForSupabase(collectorName: string): Promise<TablesInsert<'collectors'>> {
+export async function transformCollectorForSupabase(collectorName: string): Promise<TablesInsert<'collectors'> | null> {
   if (!collectorName) {
     throw new Error('Collector name is required');
+  }
+
+  // First check if collector already exists
+  const { data: existingCollector } = await supabase
+    .from('collectors')
+    .select('*')
+    .ilike('name', collectorName)
+    .single();
+
+  if (existingCollector) {
+    console.log('Collector already exists:', existingCollector);
+    return null; // Return null to indicate we should use existing collector
   }
 
   const nameParts = collectorName.split(/[\s&-]/);
