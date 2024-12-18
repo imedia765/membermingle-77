@@ -6,9 +6,7 @@ export const initSentry = () => {
     Sentry.init({
       dsn: import.meta.env.VITE_SENTRY_DSN,
       integrations: [
-        browserTracingIntegration({
-          tracePropagationTargets: ["localhost", /^https:\/\/yourapp\.com\/api/],
-        }),
+        browserTracingIntegration(),
         replayIntegration({
           maskAllText: true,
           blockAllMedia: true,
