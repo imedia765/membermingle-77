@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { initSentry } from './utils/sentry';
-import type { jest } from '@jest/globals';
+import { jest } from '@jest/globals';
 
 // Initialize Sentry
 initSentry();
