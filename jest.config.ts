@@ -15,5 +15,13 @@ export default {
     '/node_modules/',
     '/__tests__/',
     '/dist/'
+  ],
+  testMatch: [
+    "**/__tests__/**/*.test.[jt]s?(x)",
+    "**/?(*.)+(spec|test).[jt]s?(x)"
+  ],
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!src/**/*.d.ts"
   ]
 };
