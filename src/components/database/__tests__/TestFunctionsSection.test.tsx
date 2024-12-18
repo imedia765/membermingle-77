@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { TestFunctionsSection } from '../TestFunctionsSection';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import '@testing-library/jest-dom';
 
 // Mock the dependencies
 jest.mock('@/integrations/supabase/client', () => ({
