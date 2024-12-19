@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { supabase } from "../integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
@@ -31,59 +31,66 @@ export function AdminLayout() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  const checkSession = useCallback(async () => {
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) throw error;
+      
+      if (!session && location.pathname !== '/login') {
+        navigate("/login");
+        return false;
+      }
+      
+      return !!session;
+    } catch (error) {
+      console.error('Session check error:', error);
+      toast({
+        title: "Authentication Error",
+        description: "Please try logging in again",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return false;
+    }
+  }, [navigate, toast, location.pathname]);
+
   useEffect(() => {
     let isActive = true;
     let refreshInterval: NodeJS.Timeout;
 
-    const checkSession = async () => {
+    const initializeAuth = async () => {
       if (!isActive) return;
       
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) throw error;
-        
-        if (!session && location.pathname !== '/login') {
-          navigate("/login");
-          return;
-        }
-        
-        setIsLoggedIn(!!session);
-      } catch (error) {
-        console.error('Session check error:', error);
-        toast({
-          title: "Authentication Error",
-          description: "Please try logging in again",
-          variant: "destructive",
-        });
-        navigate("/login");
-      } finally {
-        if (isActive) {
-          setLoading(false);
-        }
+      setLoading(true);
+      const hasSession = await checkSession();
+      if (isActive) {
+        setIsLoggedIn(hasSession);
+        setLoading(false);
       }
     };
 
-    // Initial session check
-    checkSession();
+    initializeAuth();
 
     // Set up auth state change listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!isActive) return;
       
+      console.log("Auth state changed:", event);
       setIsLoggedIn(!!session);
+      
       if (!session && location.pathname !== '/login') {
         navigate("/login");
       }
     });
 
     // Set up controlled query refresh interval
-    refreshInterval = setInterval(() => {
-      if (isLoggedIn) {
+    if (isLoggedIn) {
+      refreshInterval = setInterval(() => {
         queryClient.invalidateQueries({ 
           predicate: (query) => !query.queryKey.includes('static')
         });
-      }
-    }, 30000);
+      }, 30000);
+    }
 
     // Cleanup function
     return () => {
@@ -93,15 +100,14 @@ export function AdminLayout() {
         clearInterval(refreshInterval);
       }
     };
-  }, [navigate, toast, queryClient, location.pathname, isLoggedIn]);
+  }, [navigate, queryClient, location.pathname, isLoggedIn, checkSession]);
 
-  const handleNavigation = (path: string) => {
+  const handleNavigation = useCallback((path: string) => {
     if (location.pathname !== path) {
-      // Prevent query invalidation during navigation
       queryClient.cancelQueries();
       navigate(path);
     }
-  };
+  }, [location.pathname, navigate, queryClient]);
 
   if (loading) {
     return (
