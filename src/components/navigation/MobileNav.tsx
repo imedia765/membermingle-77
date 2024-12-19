@@ -19,6 +19,15 @@ export const MobileNav = ({
   setOpen, 
   handleNavigation 
 }: MobileNavProps) => {
+  const onLogoutClick = async () => {
+    try {
+      await handleLogout();
+      setOpen(false);
+    } catch (error) {
+      console.error("Mobile logout error:", error);
+    }
+  };
+
   return (
     <div className="flex items-center space-x-2 md:hidden">
       <ThemeToggle />
@@ -38,7 +47,7 @@ export const MobileNav = ({
               <Button
                 variant="outline"
                 className="justify-start bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300"
-                onClick={handleLogout}
+                onClick={onLogoutClick}
               >
                 Logout
               </Button>

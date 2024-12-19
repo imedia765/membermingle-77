@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { ThemeToggle } from "../ThemeToggle";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "../ui/use-toast";
 
 interface DesktopNavProps {
   isLoggedIn: boolean;
@@ -11,31 +8,10 @@ interface DesktopNavProps {
 }
 
 export const DesktopNav = ({ isLoggedIn, handleLogout }: DesktopNavProps) => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const onLogout = async () => {
-    try {
-      await handleLogout();
-      toast({
-        title: "Logged out successfully",
-        description: "Come back soon!",
-      });
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast({
-        title: "Logout failed",
-        description: error instanceof Error ? error.message : "An unexpected error occurred",
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <div className="hidden md:flex items-center space-x-2">
       {isLoggedIn ? (
-        <Button variant="outline" size="sm" onClick={onLogout}>
+        <Button variant="outline" size="sm" onClick={handleLogout}>
           Logout
         </Button>
       ) : (

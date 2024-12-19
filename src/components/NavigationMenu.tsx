@@ -72,11 +72,6 @@ export function NavigationMenu() {
     };
   }, [toast, createProfile, fetchUserRole, setUserRole]);
 
-  const handleNavigation = (path: string) => {
-    setOpen(false);
-    navigate(path);
-  };
-
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -96,7 +91,13 @@ export function NavigationMenu() {
         description: error instanceof Error ? error.message : "An unexpected error occurred",
         variant: "destructive",
       });
+      throw error; // Re-throw to be handled by the UI components if needed
     }
+  };
+
+  const handleNavigation = (path: string) => {
+    setOpen(false);
+    navigate(path);
   };
 
   return (
