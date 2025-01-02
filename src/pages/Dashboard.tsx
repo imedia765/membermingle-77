@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChartContainer } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { UserCircle, Users, Calendar, AlertCircle } from "lucide-react";
+import { MembersList } from "@/components/members/MembersList";
 
 const data = [
   { month: 'Jan', members: 40 },
@@ -99,6 +100,12 @@ const Dashboard = () => {
                 </BarChart>
               </ChartContainer>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-[#1e2430] to-[#252b3b] border-[#2a3040] text-white">
+          <CardContent className="p-6">
+            <MembersList />
           </CardContent>
         </Card>
       </div>
