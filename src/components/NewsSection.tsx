@@ -13,7 +13,7 @@ export const NewsSection = () => {
               Brother Sajid has resigned and a new Committee was formally created. We would like to thank brother Sajid for his previous efforts, and he will continue helping the Committee where possible in an informal capacity.
             </p>
             <p className="text-gray-300 mb-6">
-              New Committee, <Link to="/terms" className="text-[#4a9eed] hover:text-[#3a8edd]">terms and conditions</Link>, and registration, formalise roles for Collectors Responsibilities
+              New Committee, <Link to="/terms" className="text-[#4a9eed] hover:text-[#3a8edd]">terms and conditions</Link>, and registration, <Link to="/collector-responsibilities" className="text-[#4a9eed] hover:text-[#3a8edd]">formalise roles for Collectors Responsibilities</Link>
             </p>
             <div className="mt-6">
               <h4 className="text-xl font-semibold mb-4 text-[#4a9eed]">New Committee as of December 2023</h4>
