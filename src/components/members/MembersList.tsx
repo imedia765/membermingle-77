@@ -57,37 +57,46 @@ export const MembersList = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Members</h2>
-        <Button onClick={() => setIsCreateOpen(true)}>
-          <Plus className="mr-2" />
+        <Button onClick={() => setIsCreateOpen(true)} className="bg-primary hover:bg-primary/90">
+          <Plus className="h-4 w-4 mr-2" />
           Add Member
         </Button>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border border-[#2a3040] overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Member Number</TableHead>
-              <TableHead>Full Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
+            <TableRow className="hover:bg-transparent border-[#2a3040]">
+              <TableHead className="text-gray-300">Member Number</TableHead>
+              <TableHead className="text-gray-300">Full Name</TableHead>
+              <TableHead className="text-gray-300">Email</TableHead>
+              <TableHead className="text-gray-300">Phone</TableHead>
+              <TableHead className="text-gray-300">Status</TableHead>
+              <TableHead className="text-gray-300">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {members?.map((member) => (
-              <TableRow key={member.id}>
-                <TableCell>{member.member_number}</TableCell>
+              <TableRow key={member.id} className="hover:bg-[#252b3b]/50 border-[#2a3040]">
+                <TableCell className="font-medium">{member.member_number}</TableCell>
                 <TableCell>{member.full_name}</TableCell>
                 <TableCell>{member.email}</TableCell>
                 <TableCell>{member.phone}</TableCell>
-                <TableCell>{member.status}</TableCell>
+                <TableCell>
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    member.status === 'active' 
+                      ? 'bg-green-500/20 text-green-400' 
+                      : 'bg-gray-500/20 text-gray-400'
+                  }`}>
+                    {member.status}
+                  </span>
+                </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
                       size="icon"
+                      className="border-[#2a3040] hover:bg-[#252b3b]"
                       onClick={() => {
                         setSelectedMember(member);
                         setIsEditOpen(true);
@@ -98,6 +107,7 @@ export const MembersList = () => {
                     <Button
                       variant="outline"
                       size="icon"
+                      className="border-[#2a3040] hover:bg-[#252b3b] hover:text-red-400"
                       onClick={() => handleDelete(member.id)}
                     >
                       <Trash2 className="h-4 w-4" />
