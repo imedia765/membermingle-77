@@ -82,31 +82,33 @@ const Dashboard = () => {
           <CardContent>
             <div className="h-[300px] w-full">
               <ChartContainer config={chartConfig}>
-                <BarChart data={data}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#2a3040" />
-                  <XAxis dataKey="month" stroke="#9CA3AF" />
-                  <YAxis stroke="#9CA3AF" />
-                  <Tooltip content={({ active, payload }) => {
-                    if (active && payload && payload.length) {
-                      return (
-                        <div className="bg-[#1e2430] border border-[#2a3040] p-2 rounded">
-                          <p className="text-white">{`${payload[0].value} members`}</p>
-                        </div>
-                      );
-                    }
-                    return null;
-                  }} />
-                  <Bar dataKey="members" fill="#4a9eed" radius={[4, 4, 0, 0]} />
-                </BarChart>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={data}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#2a3040" />
+                    <XAxis dataKey="month" stroke="#9CA3AF" />
+                    <YAxis stroke="#9CA3AF" />
+                    <Tooltip 
+                      content={({ active, payload }) => {
+                        if (active && payload && payload.length) {
+                          return (
+                            <div className="bg-[#1e2430] border border-[#2a3040] p-2 rounded">
+                              <p className="text-white">{`${payload[0].value} members`}</p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      }} 
+                    />
+                    <Bar dataKey="members" fill="#4a9eed" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
               </ChartContainer>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-[#1e2430] to-[#252b3b] border-[#2a3040] text-white">
-          <CardContent className="p-6">
-            <MembersList />
-          </CardContent>
+        <Card className="bg-gradient-to-br from-[#1e2430] to-[#252b3b] border-[#2a3040] text-white p-6">
+          <MembersList />
         </Card>
       </div>
     </div>
