@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 export const NewsSection = () => {
   return (
@@ -12,7 +13,7 @@ export const NewsSection = () => {
               Brother Sajid has resigned and a new Committee was formally created. We would like to thank brother Sajid for his previous efforts, and he will continue helping the Committee where possible in an informal capacity.
             </p>
             <p className="text-gray-300 mb-6">
-              New Committee, terms and conditions, and registration, formalise roles for Collectors Responsibilities
+              New Committee, <Link to="/terms" className="text-[#4a9eed] hover:text-[#3a8edd]">terms and conditions</Link>, and registration, formalise roles for Collectors Responsibilities
             </p>
             <div className="mt-6">
               <h4 className="text-xl font-semibold mb-4 text-[#4a9eed]">New Committee as of December 2023</h4>
@@ -33,7 +34,6 @@ export const NewsSection = () => {
               <p className="text-gray-300 mt-4">Terms have been updated.</p>
             </div>
           </section>
-
           <section className="bg-gradient-to-br from-[#1e2430] to-[#252b3b] p-8 rounded-xl shadow-lg border border-[#2a3040]">
             <h3 className="text-2xl font-semibold text-[#4a9eed] mb-6">What we expect</h3>
             <ul className="space-y-4 text-gray-300">
