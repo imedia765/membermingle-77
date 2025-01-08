@@ -18,7 +18,7 @@ export const AuditLogsList: React.FC = () => {
           .range(0, 49);
 
         if (error) throw error;
-        setLogs(data || []);
+        setLogs(data as AuditLog[] || []);
       } catch (error) {
         console.error('Error fetching audit logs:', error);
         toast({

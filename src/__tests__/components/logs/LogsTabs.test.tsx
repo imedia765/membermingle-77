@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { LogsTabs } from '@/components/logs/LogsTabs';
 import { LOGS_TABS } from '@/constants/logs';
