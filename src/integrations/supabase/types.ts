@@ -450,14 +450,6 @@ export type Database = {
           command: string
         }[]
       }
-      get_tables_info: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          columns: Json
-          rls_enabled: boolean
-        }[]
-      }
       is_admin: {
         Args: {
           user_uid: string
