@@ -28,17 +28,23 @@ const PaymentCard = ({
   lastEmergencyPaymentAmount
 }: PaymentCardProps) => {
   const formatDate = (dateString?: string) => {
-    if (!dateString) return 'January 1st, 2025';
+    if (!dateString) return 'Not set';
     try {
       return format(new Date(dateString), 'MMMM do, yyyy');
     } catch (e) {
-      return 'January 1st, 2025';
+      console.error('Date formatting error:', e);
+      return 'Invalid date';
     }
   };
 
   const getPaymentStatusInfo = (dueDate?: string) => {
-    const defaultDueDate = new Date('2025-01-01');
-    const dueDateObj = dueDate ? new Date(dueDate) : defaultDueDate;
+    if (!dueDate) return {
+      color: 'text-blue-400',
+      message: 'Due date not set',
+      warning: null
+    };
+
+    const dueDateObj = new Date(dueDate);
     const today = new Date();
     const twentyEightDaysAfterDue = addDays(dueDateObj, 28);
     const sevenDaysAfterGracePeriod = addDays(twentyEightDaysAfterDue, 7);
@@ -46,14 +52,14 @@ const PaymentCard = ({
     if (isBefore(today, dueDateObj)) {
       return {
         color: 'text-blue-400',
-        message: 'Due: January 1st, 2025',
+        message: `Due: ${formatDate(dueDate)}`,
         warning: null
       };
     } else if (isBefore(today, twentyEightDaysAfterDue)) {
       return {
         color: 'text-yellow-400',
         message: 'Payment overdue',
-        warning: null
+        warning: `Due date was ${formatDate(dueDate)}`
       };
     } else {
       const daysUntilDeactivation = differenceInDays(sevenDaysAfterGracePeriod, today);
@@ -97,7 +103,8 @@ const PaymentCard = ({
     }
   };
 
-  const yearlyPaymentInfo = getPaymentStatusInfo(annualPaymentDueDate || '2025-01-01');
+  const yearlyPaymentInfo = getPaymentStatusInfo(annualPaymentDueDate);
+  const emergencyPaymentInfo = getPaymentStatusInfo(emergencyCollectionDueDate);
 
   return (
     <Card className="dashboard-card">
@@ -148,9 +155,14 @@ const PaymentCard = ({
               <p className="text-2xl font-bold text-white">
                 £{emergencyCollectionAmount}
               </p>
-              <p className="text-lg font-bold text-dashboard-warning">
-                Due: {formatDate(emergencyCollectionDueDate)}
+              <p className={`text-lg font-bold ${emergencyPaymentInfo.color}`}>
+                {emergencyPaymentInfo.message}
               </p>
+              {emergencyPaymentInfo.warning && (
+                <p className="text-sm text-rose-500 font-medium mt-2">
+                  ⚠️ {emergencyPaymentInfo.warning}
+                </p>
+              )}
               {lastEmergencyPaymentDate && (
                 <div className="mt-2">
                   <p className="text-xs text-dashboard-muted">
