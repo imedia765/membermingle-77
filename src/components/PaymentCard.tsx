@@ -44,6 +44,7 @@ const PaymentCard = ({
         .eq('member_number', memberNumber);
       
       if (error) throw error;
+      console.log('Pending payments for member:', memberNumber, data);
       return data;
     },
     enabled: !!memberNumber
@@ -122,7 +123,7 @@ const PaymentCard = ({
     const statusInfo = getPaymentStatusInfo(dueDate);
     const hasPendingPayment = pendingPayments?.some(p => p.payment_type === paymentType);
     
-    // Don't show overdue warning if there's a pending payment
+    // Don't show overdue warning if there's a pending payment or if not overdue
     if (!statusInfo.isOverdue || hasPendingPayment) return null;
     
     return (
