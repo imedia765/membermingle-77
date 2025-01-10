@@ -148,7 +148,7 @@ const PaymentCard = ({
             <div className="flex items-start justify-between">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-4xl font-bold text-dashboard-accent1">£40</p>
+                  <p className="text-4xl font-bold text-[#0EA5E9]">£40</p>
                   <p className="text-sm text-dashboard-text/70">Annual membership fee</p>
                 </div>
                 <PaymentDueDate 
@@ -176,7 +176,7 @@ const PaymentCard = ({
                     Date: {formatDate(lastAnnualPaymentDate)}
                   </p>
                   {lastAnnualPaymentAmount && (
-                    <p className="text-sm text-emerald-400 font-medium">
+                    <p className="text-sm text-[#0EA5E9] font-medium">
                       Amount paid: £{lastAnnualPaymentAmount}
                     </p>
                   )}
@@ -193,7 +193,7 @@ const PaymentCard = ({
             <div className="flex items-start justify-between">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <p className="text-4xl font-bold text-dashboard-accent1">
+                  <p className="text-4xl font-bold text-[#0EA5E9]">
                     £{emergencyCollectionAmount}
                   </p>
                   <p className="text-sm text-dashboard-text/70">One-time payment</p>
@@ -223,7 +223,7 @@ const PaymentCard = ({
                     Date: {formatDate(lastEmergencyPaymentDate)}
                   </p>
                   {lastEmergencyPaymentAmount && (
-                    <p className="text-sm text-emerald-400 font-medium">
+                    <p className="text-sm text-[#0EA5E9] font-medium">
                       Amount paid: £{lastEmergencyPaymentAmount}
                     </p>
                   )}
