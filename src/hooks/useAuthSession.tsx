@@ -36,7 +36,7 @@ export function useAuthSession() {
       await new Promise(resolve => setTimeout(resolve, 100));
       
       // Force a clean page reload to clear any remaining state
-      window.location.href = '/login';
+      window.location.reload();
       
     } catch (error: any) {
       console.error('Error during sign out:', error);
@@ -97,6 +97,8 @@ export function useAuthSession() {
           setSession(currentSession);
           if (currentSession?.user) {
             console.log('Session initialized for user:', currentSession.user.id);
+            // Force a page reload after successful login
+            window.location.reload();
           } else {
             console.log('No active session found');
             if (window.location.pathname !== '/login') {
@@ -134,6 +136,8 @@ export function useAuthSession() {
       if (event === 'SIGNED_IN') {
         setSession(currentSession);
         await queryClient.invalidateQueries();
+        // Force a page reload after successful login
+        window.location.reload();
       }
       
       setLoading(false);
