@@ -118,7 +118,7 @@ const PaymentCard = ({
     );
   };
 
-  const renderOverdueWarning = (dueDate?: string, paymentType: string) => {
+  const renderOverdueWarning = (paymentType: string, dueDate?: string) => {
     const statusInfo = getPaymentStatusInfo(dueDate);
     const hasPendingPayment = pendingPayments?.some(p => p.payment_type === paymentType);
     
@@ -164,7 +164,7 @@ const PaymentCard = ({
               </div>
             </div>
             {annualPaymentStatus === 'pending' && renderPendingMessage('yearly')}
-            {renderOverdueWarning(annualPaymentDueDate, 'yearly')}
+            {renderOverdueWarning('yearly', annualPaymentDueDate)}
             {lastAnnualPaymentDate && (
               <div className="pt-4 mt-4 border-t border-dashboard-cardBorder/30">
                 <p className="text-sm font-medium mb-2 text-dashboard-text/90">
@@ -211,7 +211,7 @@ const PaymentCard = ({
               </div>
             </div>
             {emergencyCollectionStatus === 'pending' && renderPendingMessage('emergency')}
-            {renderOverdueWarning(emergencyCollectionDueDate, 'emergency')}
+            {renderOverdueWarning('emergency', emergencyCollectionDueDate)}
             {lastEmergencyPaymentDate && (
               <div className="pt-4 mt-4 border-t border-dashboard-cardBorder/30">
                 <p className="text-sm font-medium mb-2 text-dashboard-text/90">
