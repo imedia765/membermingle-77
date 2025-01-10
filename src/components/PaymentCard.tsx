@@ -3,6 +3,8 @@ import { format, differenceInDays } from "date-fns";
 import { PaymentStatus } from "./financials/payment-card/PaymentStatus";
 import { PaymentDueDate } from "./financials/payment-card/PaymentDueDate";
 import { Check, Clock, AlertOctagon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PaymentCardProps {
   annualPaymentStatus?: 'completed' | 'pending' | 'due' | 'overdue';
@@ -27,6 +29,20 @@ const PaymentCard = ({
   lastAnnualPaymentAmount,
   lastEmergencyPaymentAmount
 }: PaymentCardProps) => {
+  // Query pending payments from Supabase
+  const { data: pendingPayments } = useQuery({
+    queryKey: ['pendingPayments'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('payment_requests')
+        .select('*')
+        .eq('status', 'pending');
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'January 1st, 2025';
     try {
@@ -79,6 +95,10 @@ const PaymentCard = ({
   };
 
   const renderPendingMessage = (paymentType: string) => {
+    const hasPendingPayment = pendingPayments?.some(p => p.payment_type === paymentType);
+    
+    if (!hasPendingPayment) return null;
+    
     return (
       <div className="mt-4 p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
         <p className="text-yellow-400 text-sm font-medium">
@@ -86,6 +106,23 @@ const PaymentCard = ({
         </p>
         <p className="text-dashboard-text/70 text-xs mt-1">
           Your payment is being reviewed and will be processed shortly
+        </p>
+      </div>
+    );
+  };
+
+  const renderOverdueWarning = (dueDate?: string) => {
+    const statusInfo = getPaymentStatusInfo(dueDate);
+    
+    if (!statusInfo.isOverdue) return null;
+    
+    return (
+      <div className="mt-4 p-4 rounded-lg bg-rose-500/10 border border-rose-500/20">
+        <p className="text-rose-400 text-sm font-medium">
+          {statusInfo.message}
+        </p>
+        <p className="text-dashboard-text/70 text-xs mt-1">
+          Please contact your collector immediately to arrange payment
         </p>
       </div>
     );
@@ -115,18 +152,10 @@ const PaymentCard = ({
                   status={annualPaymentStatus} 
                   icon={getStatusIcon(annualPaymentStatus)}
                 />
-                {getPaymentStatusInfo(annualPaymentDueDate).isOverdue && (
-                  <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${
-                    getPaymentStatusInfo(annualPaymentDueDate).isGracePeriod 
-                      ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' 
-                      : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-                  }`}>
-                    {getPaymentStatusInfo(annualPaymentDueDate).message}
-                  </span>
-                )}
               </div>
             </div>
-            {annualPaymentStatus === 'pending' && renderPendingMessage('annual')}
+            {annualPaymentStatus === 'pending' && renderPendingMessage('yearly')}
+            {getPaymentStatusInfo(annualPaymentDueDate).isOverdue && renderOverdueWarning(annualPaymentDueDate)}
             {lastAnnualPaymentDate && (
               <div className="pt-4 mt-4 border-t border-dashboard-cardBorder/30">
                 <p className="text-sm font-medium mb-2 text-dashboard-text/90">
@@ -170,18 +199,10 @@ const PaymentCard = ({
                   status={emergencyCollectionStatus} 
                   icon={getStatusIcon(emergencyCollectionStatus)}
                 />
-                {getPaymentStatusInfo(emergencyCollectionDueDate).isOverdue && (
-                  <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${
-                    getPaymentStatusInfo(emergencyCollectionDueDate).isGracePeriod 
-                      ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' 
-                      : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-                  }`}>
-                    {getPaymentStatusInfo(emergencyCollectionDueDate).message}
-                  </span>
-                )}
               </div>
             </div>
             {emergencyCollectionStatus === 'pending' && renderPendingMessage('emergency')}
+            {getPaymentStatusInfo(emergencyCollectionDueDate).isOverdue && renderOverdueWarning(emergencyCollectionDueDate)}
             {lastEmergencyPaymentDate && (
               <div className="pt-4 mt-4 border-t border-dashboard-cardBorder/30">
                 <p className="text-sm font-medium mb-2 text-dashboard-text/90">
