@@ -41,8 +41,8 @@ export function useAuthSession() {
     } catch (error: any) {
       console.error('Error during sign out:', error);
       let description = error.message;
-      if (error.message.includes('502')) {
-        description = "Failed to connect to the server. Please check your network connection and try again.";
+      if (error.message.includes('502') || error.message.includes('Failed to fetch')) {
+        description = "Network error. Please check your connection and try again.";
       }
       toast({
         title: "Error signing out",
@@ -67,12 +67,29 @@ export function useAuthSession() {
         description: "Please sign in again",
         variant: "destructive",
       });
+    } else if (error.message.includes('Failed to fetch')) {
+      toast({
+        title: "Connection Error",
+        description: "Unable to connect to the server. Please check your internet connection.",
+        variant: "destructive",
+      });
     } else {
       toast({
         title: "Authentication Error",
         description: error.message,
         variant: "destructive",
       });
+    }
+  };
+
+  const retryWithBackoff = async (fn: () => Promise<any>, maxRetries = 3) => {
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        return await fn();
+      } catch (error: any) {
+        if (i === maxRetries - 1 || !error.message?.includes('Failed to fetch')) throw error;
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
+      }
     }
   };
 
@@ -85,7 +102,10 @@ export function useAuthSession() {
       try {
         setLoading(true);
         console.log('Fetching current session...');
-        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        
+        const { data: { session: currentSession }, error } = await retryWithBackoff(() => 
+          supabase.auth.getSession()
+        );
         
         if (error) {
           console.error('Session fetch error:', error);
