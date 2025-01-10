@@ -40,10 +40,16 @@ export function useAuthSession() {
       
     } catch (error: any) {
       console.error('Error during sign out:', error);
-      let description = error.message;
-      if (error.message.includes('502') || error.message.includes('Failed to fetch')) {
+      let description = "An unexpected error occurred";
+      
+      if (error.message?.includes('Failed to fetch') || error.message?.includes('NetworkError')) {
         description = "Network error. Please check your connection and try again.";
+      } else if (error.message?.includes('502')) {
+        description = "Server error. Please try again later.";
+      } else {
+        description = error.message;
       }
+      
       toast({
         title: "Error signing out",
         description,
@@ -67,10 +73,10 @@ export function useAuthSession() {
         description: "Please sign in again",
         variant: "destructive",
       });
-    } else if (error.message.includes('Failed to fetch')) {
+    } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
       toast({
         title: "Connection Error",
-        description: "Unable to connect to the server. Please check your internet connection.",
+        description: "Unable to connect to the server. Please check your internet connection and try again.",
         variant: "destructive",
       });
     } else {
@@ -87,8 +93,20 @@ export function useAuthSession() {
       try {
         return await fn();
       } catch (error: any) {
-        if (i === maxRetries - 1 || !error.message?.includes('Failed to fetch')) throw error;
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, i) * 1000));
+        console.error(`Attempt ${i + 1} failed:`, error);
+        
+        if (i === maxRetries - 1) {
+          throw error;
+        }
+        
+        if (error.message?.includes('Failed to fetch') || error.message?.includes('NetworkError')) {
+          const delay = Math.min(1000 * Math.pow(2, i), 5000); // Cap at 5 seconds
+          console.log(`Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          continue;
+        }
+        
+        throw error;
       }
     }
   };
